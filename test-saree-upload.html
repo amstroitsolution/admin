@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Saree Upload</title>
+</head>
+<body>
+    <h1>Test Saree Upload</h1>
+    <button onclick="testAPI()">Test API Connection</button>
+    <button onclick="testAuth()">Test Authentication</button>
+    <button onclick="testUpload()">Test Upload</button>
+    
+    <div id="results" style="margin-top: 20px; padding: 10px; background: #f5f5f5;"></div>
+
+    <script>
+        const API = 'http://localhost:5000';
+        const results = document.getElementById('results');
+        
+        function log(message) {
+            results.innerHTML += '<div>' + new Date().toLocaleTimeString() + ': ' + message + '</div>';
+            console.log(message);
+        }
+        
+        async function testAPI() {
+            results.innerHTML = '';
+            log('Testing API connection...');
+            
+            try {
+                const response = await fetch(`${API}/api/equipment`);
+                const data = await response.json();
+                log(`✅ API Connection: ${response.status} - ${data.length || 0} items found`);
+            } catch (error) {
+                log(`❌ API Connection failed: ${error.message}`);
+            }
+        }
+        
+        async function testAuth() {
+            results.innerHTML = '';
+            const token = localStorage.getItem('admin_token');
+            
+            if (!token) {
+                log('❌ No admin token found. Please login first.');
+                return;
+            }
+            
+            log('✅ Admin token found');
+            log('Testing authenticated request...');
+            
+            try {
+                const response = await fetch(`${API}/api/equipment`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                const data = await response.json();
+                log(`✅ Authenticated request: ${response.status}`);
+            } catch (error) {
+                log(`❌ Authentication test failed: ${error.message}`);
+            }
+        }
+        
+        async function testUpload() {
+            results.innerHTML = '';
+            const token = localStorage.getItem('admin_token');
+            
+            if (!token) {
+                log('❌ No admin token found. Please login first.');
+                return;
+            }
+            
+            log('Testing saree upload...');
+            
+            const formData = new FormData();
+            formData.append('title', 'Test Saree');
+            formData.append('description', 'Test Description');
+            formData.append('details', 'Test Details');
+            formData.append('price', '1000');
+            formData.append('type', 'saree');
+            
+            try {
+                const response = await fetch(`${API}/api/equipment`, {
+                    method: 'POST',
+                    headers: { Authorization: `Bearer ${token}` },
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    log(`✅ Upload successful: ${data.message}`);
+                    log(`Item ID: ${data.item._id}`);
+                } else {
+                    log(`❌ Upload failed: ${response.status} - ${data.message || data.error}`);
+                }
+            } catch (error) {
+                log(`❌ Upload error: ${error.message}`);
+            }
+        }
+    </script>
+</body>
+</html>
