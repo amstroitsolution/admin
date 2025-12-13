@@ -149,7 +149,7 @@ export default function WatchBuyAdmin() {
         <div className="grid gap-6 md:grid-cols-2">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Title <span className="text-red-500">*</span>
+              Title <span className="text-[#de3cad]">*</span>
             </label>
             <input
               type="text"
@@ -189,7 +189,7 @@ export default function WatchBuyAdmin() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Media (Video/Image) <span className="text-red-500">*</span>
+              Media (Video/Image) <span className="text-[#de3cad]">*</span>
             </label>
             <input
               id="media-input"
@@ -329,7 +329,7 @@ export default function WatchBuyAdmin() {
                   {/* Delete Button */}
                   <button
                     onClick={() => handleDelete(item._id)}
-                    className="absolute top-3 right-3 bg-red-500 hover:bg-red-600 text-white p-2 rounded-full shadow-lg transition-all opacity-0 group-hover:opacity-100"
+                    className="absolute top-3 right-3 bg-pink-500 hover:bg-[#de3cad] text-white p-2 rounded-full shadow-lg transition-all opacity-0 group-hover:opacity-100"
                     title="Delete"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

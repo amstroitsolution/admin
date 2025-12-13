@@ -255,7 +255,7 @@ export default function KidsSectionsManager() {
                   </button>
                   <button
                     onClick={() => handleDelete(section._id)}
-                    className="flex-1 flex items-center justify-center gap-1 px-3 py-2 text-sm bg-red-50 text-red-600 rounded hover:bg-red-100"
+                    className="flex-1 flex items-center justify-center gap-1 px-3 py-2 text-sm bg-pink-50 text-[#de3cad] rounded hover:bg-pink-100"
                   >
                     <FiTrash2 /> Delete
                   </button>
@@ -317,7 +317,7 @@ export default function KidsSectionsManager() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-semibold text-gray-800 mb-2">
-                        Section Name (ID) <span className="text-red-500">*</span>
+                        Section Name (ID) <span className="text-[#de3cad]">*</span>
                       </label>
                       <input
                         type="text"
@@ -332,7 +332,7 @@ export default function KidsSectionsManager() {
 
                     <div>
                       <label className="block text-sm font-semibold text-gray-800 mb-2">
-                        Display Name <span className="text-red-500">*</span>
+                        Display Name <span className="text-[#de3cad]">*</span>
                       </label>
                       <input
                         type="text"
@@ -436,7 +436,7 @@ export default function KidsSectionsManager() {
                                 {field.required && (
                                   <>
                                     <span className="mx-1">•</span>
-                                    <span className="bg-red-100 text-red-700 px-2 py-0.5 rounded">Required</span>
+                                    <span className="bg-pink-100 text-[#de3cad] px-2 py-0.5 rounded">Required</span>
                                   </>
                                 )}
                               </div>
@@ -444,7 +444,7 @@ export default function KidsSectionsManager() {
                             <button
                               type="button"
                               onClick={() => removeField(index)}
-                              className="text-red-600 hover:text-red-700 hover:bg-red-50 p-2 rounded-lg transition-all"
+                              className="text-[#de3cad] hover:text-[#de3cad] hover:bg-pink-50 p-2 rounded-lg transition-all"
                             >
                               <FiX className="w-5 h-5" />
                             </button>

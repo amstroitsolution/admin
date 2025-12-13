@@ -124,7 +124,7 @@ export default function StatsAdmin() {
       {/* Form */}
       <div className="admin-card p-6">
         <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-          <FiTrendingUp className="text-red-600" />
+          <FiTrendingUp className="text-[#de3cad]" />
           {editing ? 'Edit Stat' : 'Add New Stat'}
         </h3>
 
@@ -132,13 +132,13 @@ export default function StatsAdmin() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Label <span className="text-red-500">*</span>
+                Label <span className="text-[#de3cad]">*</span>
               </label>
               <input
                 type="text"
                 value={form.label}
                 onChange={(e) => setForm({ ...form, label: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
                 placeholder="e.g., Active Clients"
                 required
               />
@@ -146,13 +146,13 @@ export default function StatsAdmin() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Value <span className="text-red-500">*</span>
+                Value <span className="text-[#de3cad]">*</span>
               </label>
               <input
                 type="number"
                 value={form.value}
                 onChange={(e) => setForm({ ...form, value: parseInt(e.target.value) || 0 })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
                 placeholder="e.g., 820"
                 required
                 min="0"
@@ -167,7 +167,7 @@ export default function StatsAdmin() {
                 type="text"
                 value={form.suffix}
                 onChange={(e) => setForm({ ...form, suffix: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
                 placeholder="e.g., +, k+, %, M+"
               />
               <p className="text-xs text-gray-500 mt-1">
@@ -183,7 +183,7 @@ export default function StatsAdmin() {
                 type="number"
                 value={form.order}
                 onChange={(e) => setForm({ ...form, order: parseInt(e.target.value) || 0 })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
                 placeholder="0"
                 min="0"
               />
@@ -199,7 +199,7 @@ export default function StatsAdmin() {
               id="isActive"
               checked={form.isActive}
               onChange={(e) => setForm({ ...form, isActive: e.target.checked })}
-              className="w-4 h-4 text-red-600 rounded focus:ring-red-500"
+              className="w-4 h-4 text-[#de3cad] rounded focus:ring-pink-500"
             />
             <label htmlFor="isActive" className="text-sm font-medium text-gray-700 cursor-pointer">
               Active (visible on website)
@@ -209,7 +209,7 @@ export default function StatsAdmin() {
           <div className="flex gap-3 pt-2">
             <button
               type="submit"
-              className="px-6 py-2.5 bg-gradient-to-r from-red-600 to-amber-600 text-white rounded-lg font-medium hover:shadow-lg transition-all hover:scale-105"
+              className="px-6 py-2.5 bg-gradient-to-r from-[#de3cad] to-[#e854c1] text-white rounded-lg font-medium hover:shadow-lg transition-all hover:scale-105"
             >
               {editing ? 'Update Stat' : 'Add Stat'}
             </button>
@@ -239,7 +239,7 @@ export default function StatsAdmin() {
         
         {loading && (
           <div className="text-center py-12">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-red-600"></div>
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#de3cad]600"></div>
             <p className="text-gray-500 mt-4">Loading stats...</p>
           </div>
         )}
@@ -295,7 +295,7 @@ export default function StatsAdmin() {
                 </button>
                 <button
                   onClick={() => handleDelete(stat._id)}
-                  className="flex-1 px-3 py-2 text-sm bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-all font-medium"
+                  className="flex-1 px-3 py-2 text-sm bg-pink-50 text-[#de3cad] rounded-lg hover:bg-pink-100 transition-all font-medium"
                 >
                   Delete
                 </button>

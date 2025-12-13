@@ -217,7 +217,7 @@ export default function KidsSectionDataManager() {
 
         <div className="mb-6">
           <label className="block text-sm font-semibold text-gray-800 mb-2">
-            Select Kids Section <span className="text-red-500">*</span>
+            Select Kids Section <span className="text-[#de3cad]">*</span>
           </label>
           <select
             value={selectedSection?._id || ''}
@@ -284,7 +284,7 @@ export default function KidsSectionDataManager() {
                     </button>
                     <button
                       onClick={() => handleDelete(item._id)}
-                      className="flex-1 flex items-center justify-center gap-1 px-3 py-2 text-sm bg-red-50 text-red-600 rounded hover:bg-red-100"
+                      className="flex-1 flex items-center justify-center gap-1 px-3 py-2 text-sm bg-pink-50 text-[#de3cad] rounded hover:bg-pink-100"
                     >
                       <FiTrash2 /> Delete
                     </button>
@@ -337,7 +337,7 @@ export default function KidsSectionDataManager() {
                   {selectedSection.fields.map(field => (
                     <div key={field.name}>
                       <label className="block text-sm font-semibold text-gray-800 mb-2">
-                        {field.label} {field.required && <span className="text-red-500">*</span>}
+                        {field.label} {field.required && <span className="text-[#de3cad]">*</span>}
                       </label>
                       {renderField(field)}
                     </div>

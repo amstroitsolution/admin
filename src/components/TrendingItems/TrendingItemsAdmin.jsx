@@ -120,7 +120,7 @@ export default function TrendingItemsAdmin() {
             <p className="text-pink-600 font-bold mb-3">₹{item.price?.toLocaleString()}</p>
             <div className="flex gap-2">
               <button onClick={() => handleEdit(item)} className="bg-blue-500 text-white px-4 py-1 rounded text-sm hover:bg-blue-600">Edit</button>
-              <button onClick={() => handleDelete(item._id)} className="bg-red-500 text-white px-4 py-1 rounded text-sm hover:bg-red-600">Delete</button>
+              <button onClick={() => handleDelete(item._id)} className="bg-pink-500 text-white px-4 py-1 rounded text-sm hover:bg-[#de3cad]">Delete</button>
             </div>
           </div>
         ))}

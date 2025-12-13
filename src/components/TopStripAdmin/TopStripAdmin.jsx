@@ -89,7 +89,7 @@ export default function TopStripAdmin() {
               whileTap={{ scale: 0.98 }}
               type="submit"
               disabled={loading}
-              className="px-6 py-3 bg-gradient-to-r from-pink-600 to-red-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
+              className="px-6 py-3 bg-gradient-to-r from-pink-600 to-[#e854c1] text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
             >
               <FiSave /> {loading ? 'Saving...' : 'Save Changes'}
             </motion.button>
@@ -99,7 +99,7 @@ export default function TopStripAdmin() {
         {/* Preview */}
         <div className="mt-8 p-4 bg-gray-50 rounded-xl">
           <h3 className="text-sm font-semibold text-gray-700 mb-3">Preview:</h3>
-          <div className="w-full bg-gradient-to-r from-pink-500 to-red-500 text-white text-center py-2 text-sm rounded-lg">
+          <div className="w-full bg-gradient-to-r from-pink-500 to-[#e854c1] text-white text-center py-2 text-sm rounded-lg">
             <p>{formData.message}</p>
           </div>
         </div>

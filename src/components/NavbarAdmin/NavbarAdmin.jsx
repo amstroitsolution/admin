@@ -501,7 +501,7 @@ export default function NavbarAdmin() {
                       </button>
                       <button
                         onClick={() => handleDeleteMenu(menu._id)}
-                        className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                        className="p-2 text-[#de3cad] hover:bg-pink-50 rounded-lg transition-colors"
                       >
                         <FiTrash2 className="w-4 h-4" />
                       </button>
@@ -546,7 +546,7 @@ export default function NavbarAdmin() {
                               </button>
                               <button
                                 onClick={() => handleDeleteSubmenu(submenu._id)}
-                                className="p-1 text-red-600 hover:bg-red-50 rounded transition-colors"
+                                className="p-1 text-[#de3cad] hover:bg-pink-50 rounded transition-colors"
                               >
                                 <FiTrash2 className="w-3 h-3" />
                               </button>

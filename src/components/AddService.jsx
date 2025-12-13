@@ -22,8 +22,10 @@ const AddService = () => {
     Object.keys(form).forEach((key) => data.append(key, form[key]));
     if (image) data.append("image", image);
 
+    const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+    
     try {
-      await axios.post("http://localhost:5000/api/services/admin", data);
+      await axios.post(`${API_BASE}/api/services/admin`, data);
       alert("✅ Service added successfully!");
       navigate("/services-admin");
     } catch (err) {

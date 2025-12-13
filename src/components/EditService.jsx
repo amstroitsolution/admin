@@ -14,7 +14,8 @@ const EditService = () => {
 
   const fetchService = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/services`);
+      const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+      const res = await axios.get(`${API_BASE}/api/services`);
       const found = res.data.services.find((s) => s._id === id);
       if (found) setForm(found);
     } catch (err) {
@@ -29,7 +30,8 @@ const EditService = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.patch(`http://localhost:5000/api/services/admin/${id}`, form);
+      const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+      await axios.patch(`${API_BASE}/api/services/admin/${id}`, form);
       alert("✅ Service updated!");
       navigate("/services-admin");
     } catch (err) {

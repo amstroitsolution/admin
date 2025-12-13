@@ -30,7 +30,8 @@ const ContactManager = () => {
   const fetchContacts = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:5000/api/contact?page=${currentPage}&limit=10`);
+      const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+      const response = await fetch(`${API_BASE}/api/contact?page=${currentPage}&limit=10`);
       const data = await response.json();
       
       if (data.success) {
@@ -46,7 +47,8 @@ const ContactManager = () => {
 
   const updateContactStatus = async (contactId, newStatus) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/contact/${contactId}/status`, {
+      const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+      const response = await fetch(`${API_BASE}/api/contact/${contactId}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -73,7 +75,8 @@ const ContactManager = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/api/contact/${contactId}`, {
+      const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+      const response = await fetch(`${API_BASE}/api/contact/${contactId}`, {
         method: 'DELETE',
       });
 
@@ -140,7 +143,8 @@ const ContactManager = () => {
 
     try {
       setSendingReply(true);
-      const response = await fetch(`http://localhost:5000/api/contact/${selectedContact._id}/reply`, {
+      const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+      const response = await fetch(`${API_BASE}/api/contact/${selectedContact._id}/reply`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -79,7 +79,7 @@ export default function SpecialOffersAdmin() {
 
   return (
     <div className="p-6">
-      <h2 className="text-3xl font-bold mb-6 text-amber-600">Special Offers Manager</h2>
+      <h2 className="text-3xl font-bold mb-6 text-[#de3cad]">Special Offers Manager</h2>
       
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md mb-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -100,24 +100,24 @@ export default function SpecialOffersAdmin() {
         <textarea placeholder="Description" value={form.description} onChange={(e) => setForm({...form, description: e.target.value})} className="border p-2 rounded w-full mt-4" rows="3" />
         <input type="file" multiple accept="image/*" onChange={(e) => setFiles([...e.target.files])} className="mt-4" />
         <div className="flex gap-2 mt-4">
-          <button type="submit" className="bg-amber-600 text-white px-6 py-2 rounded hover:bg-amber-700">{editId ? 'Update' : 'Add'}</button>
+          <button type="submit" className="bg-[#de3cad] text-white px-6 py-2 rounded hover:bg-[#e854c1]">{editId ? 'Update' : 'Add'}</button>
           {editId && <button type="button" onClick={resetForm} className="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600">Cancel</button>}
         </div>
       </form>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {items.map(item => (
-          <div key={item._id} className="bg-white p-4 rounded-lg shadow-md border-2 border-amber-200">
+          <div key={item._id} className="bg-white p-4 rounded-lg shadow-md border-2 border-pink-200">
             {item.images?.[0] && <img src={item.images[0].startsWith('http') ? item.images[0] : `${API}${item.images[0]}`} alt={item.title} className="w-full h-48 object-cover rounded mb-3" />}
             <h3 className="font-bold text-lg mb-2">{item.title}</h3>
             <p className="text-sm text-gray-600 mb-2">{item.description}</p>
             <div className="flex justify-between items-center mb-3">
-              <span className="text-amber-600 font-bold text-xl">₹{item.offerPrice?.toLocaleString()}</span>
-              {item.discount && <span className="bg-red-600 text-white px-2 py-1 rounded text-sm">{item.discount}% OFF</span>}
+              <span className="text-[#de3cad] font-bold text-xl">₹{item.offerPrice?.toLocaleString()}</span>
+              {item.discount && <span className="bg-[#de3cad] text-white px-2 py-1 rounded text-sm">{item.discount}% OFF</span>}
             </div>
             <div className="flex gap-2">
               <button onClick={() => handleEdit(item)} className="bg-blue-500 text-white px-4 py-1 rounded text-sm hover:bg-blue-600">Edit</button>
-              <button onClick={() => handleDelete(item._id)} className="bg-red-500 text-white px-4 py-1 rounded text-sm hover:bg-red-600">Delete</button>
+              <button onClick={() => handleDelete(item._id)} className="bg-pink-500 text-white px-4 py-1 rounded text-sm hover:bg-[#de3cad]">Delete</button>
             </div>
           </div>
         ))}

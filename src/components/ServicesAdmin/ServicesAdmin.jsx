@@ -247,7 +247,7 @@ export default function ServicesAdmin() {
                         setSelectedImage(null);
                         setImagePreview('');
                       }}
-                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
+                      className="absolute -top-2 -right-2 bg-pink-500 text-white rounded-full p-1 hover:bg-[#de3cad]"
                     >
                       <FiX className="w-4 h-4" />
                     </button>
@@ -348,7 +348,7 @@ export default function ServicesAdmin() {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => handleDelete(service._id)}
-                    className="flex-1 p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors text-sm"
+                    className="flex-1 p-2 text-[#de3cad] hover:bg-pink-50 rounded-lg transition-colors text-sm"
                   >
                     <FiTrash2 className="w-4 h-4 mx-auto" />
                   </motion.button>

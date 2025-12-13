@@ -69,19 +69,19 @@ function NavItem({ label, icon, onClick, active }) {
 
 function OverviewCard({ title, value, icon, color = "gray" }) {
   const colorClasses = {
-    red: "from-red-500 to-red-600",
-    amber: "from-amber-500 to-amber-600",
+    red: "from-[#de3cad] to-[#e854c1]",
+    amber: "from-[#de3cad] to-[#ffffff]",
     green: "from-green-500 to-green-600",
     blue: "from-blue-500 to-blue-600",
-    purple: "from-purple-500 to-purple-600",
+    purple: "from-[#de3cad] to-[#e854c1]",
     gray: "from-gray-500 to-gray-600",
   };
   const bgClasses = {
-    red: "bg-red-50",
-    amber: "bg-amber-50",
+    red: "bg-pink-50",
+    amber: "bg-pink-50",
     green: "bg-green-50",
     blue: "bg-blue-50",
-    purple: "bg-purple-50",
+    purple: "bg-pink-50",
     gray: "bg-gray-50",
   };
 
@@ -386,7 +386,7 @@ export default function Dashboard() {
                     <div className="font-medium text-gray-800">Slow Fashion Section</div>
                     <div className="text-sm text-gray-600">Update slow fashion content</div>
                   </button>
-                  <button onClick={() => setActiveTab("watchbuy")} className="w-full text-left px-4 py-3 bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg hover:shadow-md transition-all">
+                  <button onClick={() => setActiveTab("watchbuy")} className="w-full text-left px-4 py-3 bg-gradient-to-r from-pink-50 to-white rounded-lg hover:shadow-md transition-all">
                     <div className="font-medium text-gray-800">Watch & Buy Collection</div>
                     <div className="text-sm text-gray-600">Manage video collection</div>
                   </button>
@@ -431,7 +431,7 @@ export default function Dashboard() {
                 <h2 className="text-2xl font-bold gradient-text">Add Saree</h2>
                 <p className="text-gray-600 mt-1">Create new saree listings with images and details</p>
               </div>
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-red-500 to-amber-500 flex items-center justify-center text-white shadow-lg animate-float">
+              <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-white shadow-lg animate-float" style={{ background: 'linear-gradient(135deg, #de3cad, #e854c1)' }}>
                 <FiPlus className="w-8 h-8" />
               </div>
             </div>
@@ -447,7 +447,7 @@ export default function Dashboard() {
                 <h2 className="text-2xl font-bold gradient-text">Add Gallery</h2>
                 <p className="text-gray-600 mt-1">Upload and organize image galleries for showcase</p>
               </div>
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500 to-red-500 flex items-center justify-center text-white shadow-lg animate-float">
+              <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-white shadow-lg animate-float" style={{ background: 'linear-gradient(135deg, #e854c1, #de3cad)' }}>
                 <FiImage className="w-8 h-8" />
               </div>
             </div>
@@ -486,7 +486,7 @@ export default function Dashboard() {
             <div className="admin-card p-6">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-red-500 to-amber-500 flex items-center justify-center text-white shadow-lg">
+                  <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-white shadow-lg" style={{ background: 'linear-gradient(135deg, #de3cad, #e854c1)' }}>
                     <FiGrid className="w-8 h-8" />
                   </div>
                   <div>
@@ -495,7 +495,7 @@ export default function Dashboard() {
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <button onClick={() => { setActiveTab("add"); window.scrollTo({ top: 0, behavior: "smooth" }); }} className="px-4 py-2 bg-gradient-to-r from-red-600 to-amber-600 text-white rounded-xl text-sm shadow-lg">Add New</button>
+                  <button onClick={() => { setActiveTab("add"); window.scrollTo({ top: 0, behavior: "smooth" }); }} className="px-4 py-2 text-white rounded-xl text-sm shadow-lg" style={{ background: 'linear-gradient(to right, #de3cad, #e854c1)' }}>Add New</button>
                   <button onClick={handleRefresh} className="px-4 py-2 glass border border-white/20 rounded-xl text-sm">{refreshing ? "Refreshing..." : "Refresh"}</button>
                 </div>
               </div>
@@ -522,13 +522,13 @@ export default function Dashboard() {
 
                     <div className="space-y-3">
                       <div className="flex items-center justify-between text-sm">
-                        <span className="px-3 py-1 bg-red-100 text-red-700 rounded-full font-medium">{item.type}</span>
+                        <span className="px-3 py-1 rounded-full font-medium" style={{ background: 'rgba(222, 60, 173, 0.1)', color: '#de3cad' }}>{item.type}</span>
                         <span className="font-bold text-lg gradient-text">${item.price || 0}</span>
                       </div>
 
                       <div className="flex items-center gap-2">
                         <button onClick={() => handleEdit(item)} className="flex-1 px-3 py-2 glass border border-white/20 rounded-lg text-sm">Edit</button>
-                        <button onClick={() => handleDeleteSaree(item._id)} className="px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg text-sm">Delete</button>
+                        <button onClick={() => handleDeleteSaree(item._id)} className="px-4 py-2 text-white rounded-lg text-sm" style={{ background: 'linear-gradient(to right, #de3cad, #e854c1)' }}>Delete</button>
                       </div>
                     </div>
                   </div>
@@ -597,7 +597,7 @@ export default function Dashboard() {
 
                       <div className="flex items-center gap-2">
                         <button onClick={() => openGalleryViewer(g, 0)} className="px-2 py-1 text-sm border border-gray-200 rounded-md bg-white">View</button>
-                        <button onClick={() => handleDeleteGallery(g._id)} className="px-3 py-1 text-sm rounded-md bg-rose-500 text-white">Delete</button>
+                        <button onClick={() => handleDeleteGallery(g._id)} className="px-3 py-1 text-sm rounded-md text-white" style={{ background: '#de3cad' }}>Delete</button>
                       </div>
                     </div>
                   </div>
@@ -968,13 +968,13 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-slate-50 via-red-50 to-amber-50">
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-slate-50 via-pink-50 to-white">
       {/* animated background or particles (cosmetic) */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/4 left-1/6 w-96 h-96 bg-red-500/10 rounded-full blur-3xl animate-pulse-slow" />
-        <div className="absolute bottom-1/3 right-1/6 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: "2s" }} />
+        <div className="absolute top-1/4 left-1/6 w-96 h-96 rounded-full blur-3xl animate-pulse-slow" style={{ background: 'rgba(222, 60, 173, 0.1)' }} />
+        <div className="absolute bottom-1/3 right-1/6 w-80 h-80 rounded-full blur-3xl animate-pulse-slow" style={{ background: 'rgba(232, 84, 193, 0.1)', animationDelay: "2s" }} />
         {particles.map((p) => (
-          <motion.div key={p.id} className="absolute w-1 h-1 bg-red-400/30 rounded-full" style={{ left: `${p.x}%`, top: `${p.y}%`, width: `${p.size}px`, height: `${p.size}px` }} animate={{ y: [0, -30, 0], opacity: [0, 0.6, 0] }} transition={{ duration: p.duration, repeat: Infinity, ease: "easeInOut" }} />
+          <motion.div key={p.id} className="absolute w-1 h-1 rounded-full" style={{ left: `${p.x}%`, top: `${p.y}%`, width: `${p.size}px`, height: `${p.size}px`, background: 'rgba(222, 60, 173, 0.3)' }} animate={{ y: [0, -30, 0], opacity: [0, 0.6, 0] }} transition={{ duration: p.duration, repeat: Infinity, ease: "easeInOut" }} />
         ))}
       </div>
 
@@ -1001,10 +1001,11 @@ export default function Dashboard() {
 
           {/* Toggle Switch - Women/Kids - Hide on mobile */}
           <div className="hidden md:flex items-center gap-3 px-4 py-2 glass border border-white/20 rounded-xl">
-            <span className={`text-sm font-medium transition-colors ${categoryMode === 'women' ? 'text-rose-600' : 'text-gray-500'}`}>Women</span>
+            <span className={`text-sm font-medium transition-colors ${categoryMode === 'women' ? 'text-gray-500' : 'text-gray-500'}`} style={categoryMode === 'women' ? { color: '#de3cad' } : {}}>Women</span>
             <motion.button
               onClick={() => setCategoryMode(categoryMode === 'women' ? 'kids' : 'women')}
-              className={`relative w-14 h-7 rounded-full transition-colors ${categoryMode === 'women' ? 'bg-gradient-to-r from-rose-500 to-pink-500' : 'bg-gradient-to-r from-blue-500 to-cyan-500'}`}
+              className="relative w-14 h-7 rounded-full transition-colors"
+              style={{ background: categoryMode === 'women' ? 'linear-gradient(to right, #de3cad, #e854c1)' : 'linear-gradient(to right, rgb(59, 130, 246), rgb(6, 182, 212))' }}
               whileTap={{ scale: 0.95 }}
             >
               <motion.div
@@ -1021,7 +1022,7 @@ export default function Dashboard() {
               <motion.div animate={refreshing ? { rotate: 360 } : {}} transition={{ duration: 1, repeat: refreshing ? Infinity : 0 }}><FiRefreshCw /></motion.div>
               <span className="hidden lg:inline">{refreshing ? "Refreshing..." : "Refresh All"}</span>
             </motion.button>
-            <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => { localStorage.removeItem("admin_token"); localStorage.removeItem("admin_info"); window.location.href = "/admin/login"; }} className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-xl text-sm shadow-lg"> 
+            <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => { localStorage.removeItem("admin_token"); localStorage.removeItem("admin_info"); window.location.href = "/admin/login"; }} className="inline-flex items-center gap-2 px-4 py-2 text-white rounded-xl text-sm shadow-lg" style={{ background: 'linear-gradient(to right, #de3cad, #e854c1)' }}> 
               <FiLogOut /> 
               <span className="hidden sm:inline">Logout</span>
             </motion.button>
@@ -1042,8 +1043,8 @@ export default function Dashboard() {
               {/* Women Sections */}
               {categoryMode === 'women' && (
                 <>
-                  <div className="text-xs font-bold text-rose-600 uppercase tracking-wider px-2 mt-6 flex items-center gap-2">
-                    <span className="w-2 h-2 bg-rose-500 rounded-full"></span>
+                  <div className="text-xs font-bold uppercase tracking-wider px-2 mt-6 flex items-center gap-2" style={{ color: '#de3cad' }}>
+                    <span className="w-2 h-2 rounded-full" style={{ background: '#de3cad' }}></span>
                     Women Homepage
                   </div>
                   <div className="space-y-2">
@@ -1059,8 +1060,8 @@ export default function Dashboard() {
                     <NavItem label="Stats Counter" icon={<FiGrid />} active={activeTab === "stats"} onClick={() => { setActiveTab("stats"); setSidebarOpen(false); }} />
                   </div>
 
-                  <div className="text-xs font-bold text-rose-600 uppercase tracking-wider px-2 mt-6 flex items-center gap-2">
-                    <span className="w-2 h-2 bg-rose-500 rounded-full"></span>
+                  <div className="text-xs font-bold uppercase tracking-wider px-2 mt-6 flex items-center gap-2" style={{ color: '#de3cad' }}>
+                    <span className="w-2 h-2 rounded-full" style={{ background: '#de3cad' }}></span>
                     Women Products
                   </div>
                   <div className="space-y-2">
@@ -1157,8 +1158,8 @@ export default function Dashboard() {
             <div className="mt-6 p-4 glass rounded-xl border border-white/20">
               <p className="font-semibold text-gray-700 mb-2 flex items-center gap-2"><span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span> Quick Tips</p>
               <ul className="space-y-2 text-sm text-gray-600">
-                <li className="flex items-start gap-2"><span className="text-red-500 mt-1">•</span> Use Add to upload images with drag & drop</li>
-                <li className="flex items-start gap-2"><span className="text-amber-500 mt-1">•</span> Auto-refresh after adding items</li>
+                <li className="flex items-start gap-2"><span className="mt-1" style={{ color: '#de3cad' }}>•</span> Use Add to upload images with drag & drop</li>
+                <li className="flex items-start gap-2"><span className="mt-1" style={{ color: '#e854c1' }}>•</span> Auto-refresh after adding items</li>
                 <li className="flex items-start gap-2"><span className="text-green-500 mt-1">•</span> Click cards to view details</li>
               </ul>
             </div>

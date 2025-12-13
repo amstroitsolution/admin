@@ -159,7 +159,7 @@ export default function KidsHeroAdmin() {
                     </button>
                     <button
                       onClick={() => handleDelete(item._id)}
-                      className="p-2 text-red-600 hover:bg-red-50 rounded"
+                      className="p-2 text-[#de3cad] hover:bg-pink-50 rounded"
                     >
                       <FiTrash2 />
                     </button>
@@ -212,7 +212,7 @@ export default function KidsHeroAdmin() {
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
                     <label className="block text-sm font-semibold text-gray-800 mb-2">
-                      Title <span className="text-red-500">*</span>
+                      Title <span className="text-[#de3cad]">*</span>
                     </label>
                     <input
                       type="text"

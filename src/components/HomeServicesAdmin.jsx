@@ -4,7 +4,8 @@ import axios from "axios";
 import AddHomeService from "./AddHomeService";
 import EditHomeService from "./EditHomeService";
 
-const API_BASE = "http://localhost:5000/api/home-services";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+const API_BASE = `${API_BASE_URL}/api/home-services`;
 
 const HomeServicesAdmin = () => {
   const [items, setItems] = useState([]);
@@ -86,7 +87,7 @@ const HomeServicesAdmin = () => {
               <div className="w-full h-96 bg-gray-100">
                 {it.mediaType === "video" && it.mediaUrl ? (
                   <video
-                    src={it.mediaUrl.startsWith("http") ? it.mediaUrl : `http://localhost:5000${it.mediaUrl}`}
+                    src={it.mediaUrl.startsWith("http") ? it.mediaUrl : `${API_BASE_URL}${it.mediaUrl}`}
                     className="w-full h-full object-cover"
                     controls={false}
                     muted
@@ -96,7 +97,7 @@ const HomeServicesAdmin = () => {
                   />
                 ) : it.mediaUrl ? (
                   <img
-                    src={it.mediaUrl.startsWith("http") ? it.mediaUrl : `http://localhost:5000${it.mediaUrl}`}
+                    src={it.mediaUrl.startsWith("http") ? it.mediaUrl : `${API_BASE_URL}${it.mediaUrl}`}
                     alt={it.title}
                     className="w-full h-full object-cover"
                   />

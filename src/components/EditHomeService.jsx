@@ -2,7 +2,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const API = "http://localhost:5000/api/home-services";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+const API = `${API_BASE}/api/home-services`;
 
 const EditHomeService = ({ item, onClose = () => {}, onUpdated = () => {} }) => {
   const [form, setForm] = useState({
@@ -29,7 +30,8 @@ const EditHomeService = ({ item, onClose = () => {}, onUpdated = () => {} }) => 
       buttonLink: item.buttonLink || "",
       order: item.order || 0,
     });
-    setPreview(item.mediaUrl ? (item.mediaUrl.startsWith("http") ? item.mediaUrl : `http://localhost:5000${item.mediaUrl}`) : null);
+    const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+    setPreview(item.mediaUrl ? (item.mediaUrl.startsWith("http") ? item.mediaUrl : `${API_BASE}${item.mediaUrl}`) : null);
   }, [item]);
 
   const handleChange = (e) => {

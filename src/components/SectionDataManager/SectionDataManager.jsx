@@ -396,7 +396,7 @@ export default function SectionDataManager() {
                   </button>
                   <button
                     onClick={() => handleDelete(item._id)}
-                    className="flex-1 flex items-center justify-center gap-1 px-3 py-2 text-sm bg-red-50 text-red-600 rounded hover:bg-red-100"
+                    className="flex-1 flex items-center justify-center gap-1 px-3 py-2 text-sm bg-pink-50 text-[#de3cad] rounded hover:bg-pink-100"
                   >
                     <FiTrash2 /> Delete
                   </button>
@@ -466,7 +466,7 @@ export default function SectionDataManager() {
                         <div key={field.name || index} className="space-y-2">
                           <label className="block text-sm font-semibold text-gray-800">
                             {field.label || field.name}
-                            {field.required && <span className="text-red-500 ml-1">*</span>}
+                            {field.required && <span className="text-[#de3cad] ml-1">*</span>}
                             <span className="ml-2 text-xs font-normal text-gray-500">({field.type})</span>
                           </label>
                           {renderField(field)}

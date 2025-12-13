@@ -202,7 +202,7 @@ const InquiryManager = () => {
   const getProductTypeColor = (type) => {
     switch (type) {
       case 'KidsProduct': return 'bg-pink-100 text-pink-800';
-      case 'TrendingItem': return 'bg-red-100 text-red-800';
+      case 'TrendingItem': return 'bg-pink-100 text-[#de3cad]';
       case 'NewArrival': return 'bg-purple-100 text-purple-800';
       case 'WomenProduct': return 'bg-blue-100 text-blue-800';
       default: return 'bg-gray-100 text-gray-800';
@@ -382,7 +382,7 @@ const InquiryManager = () => {
                         </button>
                         <button
                           onClick={() => handleDeleteInquiry(inquiry._id)}
-                          className="text-red-600 hover:text-red-900"
+                          className="text-[#de3cad] hover:text-[#de3cad]"
                           title="Delete"
                         >
                           <FaTrash />

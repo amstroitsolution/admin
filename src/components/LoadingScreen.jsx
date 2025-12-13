@@ -4,11 +4,11 @@ import yashperLogo from '../assets/yashper.png';
 
 const LoadingScreen = ({ message = "Loading..." }) => {
   return (
-    <div className="fixed inset-0 bg-gradient-to-br from-slate-900 via-red-900 to-slate-900 flex items-center justify-center z-50">
+    <div className="fixed inset-0 flex items-center justify-center z-50" style={{ background: 'linear-gradient(to bottom right, rgb(15, 23, 42), #de3cad, rgb(15, 23, 42))' }}>
       {/* Animated Background */}
       <div className="absolute inset-0">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-red-500/20 rounded-full blur-3xl animate-pulse-slow"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-amber-500/20 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl animate-pulse-slow" style={{ background: 'rgba(222, 60, 173, 0.2)' }}></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full blur-3xl animate-pulse-slow" style={{ background: 'rgba(232, 84, 193, 0.2)', animationDelay: '1s' }}></div>
       </div>
 
       <div className="relative z-10 text-center">
@@ -32,7 +32,8 @@ const LoadingScreen = ({ message = "Loading..." }) => {
             {[0, 1, 2].map((i) => (
               <motion.div
                 key={i}
-                className="w-3 h-3 bg-gradient-to-r from-red-500 to-amber-500 rounded-full"
+                className="w-3 h-3 rounded-full"
+                style={{ background: 'linear-gradient(to right, #de3cad, #e854c1)' }}
                 animate={{
                   scale: [1, 1.5, 1],
                   opacity: [0.5, 1, 0.5],

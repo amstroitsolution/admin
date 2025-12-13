@@ -212,7 +212,7 @@ export default function WomenProductsAdmin({ filterGroup = null }) {
                 type="text"
                 value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
                 required
               />
             </div>
@@ -222,7 +222,7 @@ export default function WomenProductsAdmin({ filterGroup = null }) {
               <select
                 value={formData.category}
                 onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
                 required
               >
                 <option value="">Select Category</option>
@@ -251,7 +251,7 @@ export default function WomenProductsAdmin({ filterGroup = null }) {
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               rows="3"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
             />
           </div>
 
@@ -283,7 +283,7 @@ export default function WomenProductsAdmin({ filterGroup = null }) {
                     <button
                       type="button"
                       onClick={() => removeImage(index)}
-                      className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
+                      className="absolute top-1 right-1 bg-pink-500 text-white rounded-full p-1 hover:bg-[#e854c1]"
                     >
                       <FiX className="w-3 h-3" />
                     </button>
@@ -300,7 +300,7 @@ export default function WomenProductsAdmin({ filterGroup = null }) {
                 type="number"
                 value={formData.price}
                 onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
                 placeholder="0.00"
               />
             </div>
@@ -311,7 +311,7 @@ export default function WomenProductsAdmin({ filterGroup = null }) {
                 type="text"
                 value={formData.material}
                 onChange={(e) => setFormData({ ...formData, material: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
                 placeholder="Cotton, Silk, etc."
               />
             </div>
@@ -322,7 +322,7 @@ export default function WomenProductsAdmin({ filterGroup = null }) {
                 type="number"
                 value={formData.order}
                 onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
               />
             </div>
           </div>
@@ -334,7 +334,7 @@ export default function WomenProductsAdmin({ filterGroup = null }) {
                 type="text"
                 value={formData.sizes.join(', ')}
                 onChange={(e) => handleArrayInput('sizes', e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
                 placeholder="S, M, L, XL, XXL"
               />
             </div>
@@ -345,7 +345,7 @@ export default function WomenProductsAdmin({ filterGroup = null }) {
                 type="text"
                 value={formData.colors.join(', ')}
                 onChange={(e) => handleArrayInput('colors', e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
                 placeholder="Red, Blue, Green"
               />
             </div>
@@ -357,7 +357,7 @@ export default function WomenProductsAdmin({ filterGroup = null }) {
                 type="checkbox"
                 checked={formData.featured}
                 onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
-                className="w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500"
+                className="w-4 h-4 text-[#de3cad] border-gray-300 rounded focus:ring-pink-500"
               />
               <span className="text-sm font-medium text-gray-700">Featured</span>
             </label>
@@ -367,7 +367,7 @@ export default function WomenProductsAdmin({ filterGroup = null }) {
                 type="checkbox"
                 checked={formData.isActive}
                 onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-                className="w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500"
+                className="w-4 h-4 text-[#de3cad] border-gray-300 rounded focus:ring-pink-500"
               />
               <span className="text-sm font-medium text-gray-700">Active</span>
             </label>
@@ -376,7 +376,7 @@ export default function WomenProductsAdmin({ filterGroup = null }) {
           <div className="flex gap-3">
             <button
               type="submit"
-              className="px-6 py-2 bg-gradient-to-r from-red-600 to-amber-600 text-white rounded-lg hover:shadow-lg transition-all"
+              className="px-6 py-2 bg-gradient-to-r from-[#de3cad] to-[#e854c1] text-white rounded-lg hover:shadow-lg transition-all"
             >
               {editingId ? 'Update' : 'Create'} Product
             </button>
@@ -400,7 +400,7 @@ export default function WomenProductsAdmin({ filterGroup = null }) {
           <select
             value={filterCategory}
             onChange={(e) => setFilterCategory(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500"
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500"
           >
             <option value="">All {filterGroup || 'Categories'}</option>
             {currentCategories.map(cat => (
@@ -437,7 +437,7 @@ export default function WomenProductsAdmin({ filterGroup = null }) {
                       <h4 className="font-bold text-gray-800">{product.title}</h4>
                       <p className="text-sm text-gray-600">{product.category}</p>
                       {product.price && (
-                        <p className="text-lg font-bold text-red-600 mt-1">₹{product.price}</p>
+                        <p className="text-lg font-bold text-[#de3cad] mt-1">₹{product.price}</p>
                       )}
                     </div>
                     
@@ -466,7 +466,7 @@ export default function WomenProductsAdmin({ filterGroup = null }) {
                     </button>
                     <button
                       onClick={() => handleDelete(product._id)}
-                      className="flex-1 flex items-center justify-center gap-1 px-3 py-1 text-sm bg-red-50 text-red-600 rounded hover:bg-red-100"
+                      className="flex-1 flex items-center justify-center gap-1 px-3 py-1 text-sm bg-pink-50 text-[#de3cad] rounded hover:bg-pink-100"
                     >
                       <FiTrash2 /> Delete
                     </button>
