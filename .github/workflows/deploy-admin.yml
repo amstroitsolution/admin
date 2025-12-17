@@ -22,17 +22,14 @@ jobs:
         node-version: '20'
         
     - name: Install dependencies
-      working-directory: ./admin
       run: npm install
       
     - name: Build admin panel
-      working-directory: ./admin
       env:
         VITE_API_BASE_URL: https://api.yashper.com
       run: npm run build
       
     - name: Create deployment archive
-      working-directory: ./admin
       run: |
         cd dist
         tar -czf ../admin-build.tar.gz .
@@ -46,7 +43,7 @@ jobs:
         username: ${{ secrets.VPS_USERNAME }}
         key: ${{ secrets.VPS_SSH_KEY }}
         port: ${{ secrets.VPS_PORT }}
-        source: "admin/admin-build.tar.gz"
+        source: "admin-build.tar.gz"
         target: "/tmp/"
         strip_components: 1
         timeout: 30s
