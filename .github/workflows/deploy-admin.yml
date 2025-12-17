@@ -1,8 +1,11 @@
-name: Deploy Admin
+name: Deploy Admin to VPS
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, master ]
+    paths:
+      - 'admin/**'
+      - '.github/workflows/deploy-admin.yml'
   workflow_dispatch:
 
 jobs:
@@ -10,24 +13,86 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Deploy to VPS
-      uses: appleboy/ssh-action@master
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: admin/package-lock.json
+        
+    - name: Install dependencies
+      working-directory: ./admin
+      run: npm ci
+      
+    - name: Build admin panel
+      working-directory: ./admin
+      env:
+        VITE_API_BASE_URL: https://api.yashper.com
+      run: npm run build
+      
+    - name: Create deployment archive
+      working-directory: ./admin
+      run: |
+        cd dist
+        tar -czf ../admin-build.tar.gz .
+        cd ..
+        ls -lh admin-build.tar.gz
+      
+    - name: Deploy to VPS via SCP
+      uses: appleboy/scp-action@v0.1.7
       with:
         host: ${{ secrets.VPS_HOST }}
         username: ${{ secrets.VPS_USERNAME }}
-        password: ${{ secrets.VPS_PASSWORD }}
+        key: ${{ secrets.VPS_SSH_KEY }}
+        port: ${{ secrets.VPS_PORT }}
+        source: "admin/admin-build.tar.gz"
+        target: "/tmp/"
+        strip_components: 1
+        
+    - name: Extract and deploy on server
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USERNAME }}
+        key: ${{ secrets.VPS_SSH_KEY }}
         port: ${{ secrets.VPS_PORT }}
         script: |
-          cd /domains/admin.yashper.com
-          if [ ! -d "admin-repo" ]; then
-            git clone https://github.com/amstroitsolution/admin.git admin-repo
+          echo "🚀 Starting admin panel deployment..."
+          
+          # Create backup
+          if [ -d "/domains/admin.yashper.com/public_html" ]; then
+            echo "📦 Creating backup..."
+            tar -czf /tmp/admin-backup-$(date +%Y%m%d-%H%M%S).tar.gz -C /domains/admin.yashper.com/public_html . 2>/dev/null || true
           fi
-          cd admin-repo
-          git pull origin main
-          npm install
-          VITE_API_BASE_URL=https://api.yashper.com npm run build
+          
+          # Clear old files
+          echo "🗑️  Removing old files..."
           rm -rf /domains/admin.yashper.com/public_html/*
-          cp -r dist/* /domains/admin.yashper.com/public_html/
-          chown -R www-data:www-data /domains/admin.yashper.com/public_html
-          chmod -R 755 /domains/admin.yashper.com/public_html
-          echo "Admin deployed successfully!"
+          
+          # Extract new build
+          echo "📂 Extracting new build..."
+          tar -xzf /tmp/admin-build.tar.gz -C /domains/admin.yashper.com/public_html/
+          
+          # Set permissions
+          echo "🔐 Setting permissions..."
+          chmod -R 755 /domains/admin.yashper.com/public_html/
+          chown -R nobody:nobody /domains/admin.yashper.com/public_html/
+          
+          # Cleanup
+          echo "🧹 Cleaning up..."
+          rm -f /tmp/admin-build.tar.gz
+          
+          # Verify deployment
+          echo "✅ Verifying deployment..."
+          ls -la /domains/admin.yashper.com/public_html/
+          
+          if [ -f "/domains/admin.yashper.com/public_html/index.html" ]; then
+            echo "✅ Admin panel deployed successfully!"
+            echo "🌐 Admin: https://admin.yashper.com"
+          else
+            echo "❌ Deployment failed - index.html not found!"
+            exit 1
+          fi
