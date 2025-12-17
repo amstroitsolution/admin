@@ -5,27 +5,18 @@ import { FiEdit2, FiTrash2, FiEye, FiEyeOff, FiUpload, FiX } from 'react-icons/f
 
 const API = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 
-const CATEGORIES = {
-  'Dresses': ['Gown & Dresses', 'Insta Sarees', 'Jumpsuits'],
-  'Sets': ['2 Pcs Kurta Sets', '3 Pcs Kurta Sets', 'Anarkali Sets', 'A-Line Sets', 'Straight Suit Sets', 'Sharara Sets', 'Coord Sets', 'Plus Size Suit Sets'],
-  'Bottoms': ['Trouser & Pants', 'Salwar & Leggings', 'Palazzos & Culottes', 'Sharara', 'Skirts', 'Jeggings', 'Plus Size Bottoms'],
-  'Kurtas': ['A-Line Kurta', 'Straight Kurtas', 'Flared Kurtas', 'Asymmetrical Kurta', 'Winter Kurta', 'Plus Size Kurta'],
-  'Saree Collections': ['Silk Sarees', 'Cotton Sarees', 'Designer Sarees', 'Party Wear Sarees', 'Casual Sarees', 'Bridal Sarees'],
-  'Lehenga Collections': ['Bridal Lehengas', 'Party Wear Lehengas', 'Designer Lehengas', 'Casual Lehengas', 'Festive Lehengas'],
-  'Others': ['Wedding Collection']
-};
-
-const ALL_CATEGORIES = Object.values(CATEGORIES).flat();
-
 export default function WomenProductsAdmin({ filterGroup = null }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
+  const [menuCategories, setMenuCategories] = useState([]);
+  const [loadingCategories, setLoadingCategories] = useState(true);
   const [formData, setFormData] = useState({
     title: '',
     description: '',
     category: '',
+    categorySlug: '',
     price: '',
     sizes: [],
     colors: [],
@@ -37,37 +28,102 @@ export default function WomenProductsAdmin({ filterGroup = null }) {
   const [editingId, setEditingId] = useState(null);
   const [filterCategory, setFilterCategory] = useState('');
 
-  // Get categories based on filterGroup
-  const currentCategories = filterGroup && CATEGORIES[filterGroup] ? CATEGORIES[filterGroup] : ALL_CATEGORIES;
+  useEffect(() => {
+    fetchMenuCategories();
+  }, []);
 
   useEffect(() => {
     fetchProducts();
-  }, [filterCategory, filterGroup]);
+  }, []);
+
+  const fetchMenuCategories = async () => {
+    try {
+      setLoadingCategories(true);
+      const res = await axios.get(`${API}/api/menu/active`);
+      
+      // Get menu items with dropdowns (Dresses, Sets, Bottoms, Kurtas, etc.)
+      const categories = [];
+      
+      res.data.forEach(menu => {
+        // Check if menu has dropdown
+        if (menu.hasDropdown && menu.dropdown && menu.dropdown.length > 0) {
+          const menuSlug = (menu.to || menu.link || '').replace(/^\//, ''); // Remove leading slash
+          
+          // If filterGroup is set, only show categories for that group
+          if (!filterGroup || menu.label === filterGroup) {
+            categories.push({
+              _id: menu._id,
+              name: menu.label,
+              slug: menuSlug,
+              isMainCategory: true
+            });
+            
+            // Add subcategories
+            menu.dropdown.forEach(sub => {
+              categories.push({
+                _id: sub._id,
+                name: `${menu.label} → ${sub.name}`,
+                slug: sub.slug,
+                parentSlug: menuSlug,
+                fullSlug: `${menuSlug}/${sub.slug}`,
+                isMainCategory: false
+              });
+            });
+          }
+        }
+      });
+      
+      setMenuCategories(categories);
+    } catch (error) {
+      console.error('Error fetching menu categories:', error);
+    } finally {
+      setLoadingCategories(false);
+    }
+  };
 
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      let url = `${API}/api/women-products`;
-      const params = [];
+      const res = await axios.get(`${API}/api/women-products`);
       
-      if (filterCategory) {
-        params.push(`category=${encodeURIComponent(filterCategory)}`);
-      } else if (filterGroup && CATEGORIES[filterGroup]) {
-        // Fetch all products in this group
-        const groupCategories = CATEGORIES[filterGroup];
-        const res = await axios.get(url);
-        const filtered = res.data.filter(p => groupCategories.includes(p.category));
+      // If filterGroup is set, only show products from that group
+      if (filterGroup) {
+        const filtered = res.data.filter(product => {
+          if (!product.category) return false;
+          
+          const categoryStr = String(product.category).toLowerCase();
+          const filterStr = filterGroup.toLowerCase();
+          
+          // Match based on filterGroup:
+          // "Dresses" → matches "Gown & Dresses", "Jumpsuits", etc.
+          // "Sets" → matches "Coord Sets", "2 Pcs Kurta Sets", "Anarkali Sets", etc.
+          // "Bottoms" → matches "Trouser & Pants", "Salwar & Leggings", "Palazzos", etc.
+          // "Kurtas" → matches "Straight Kurtas", "Flared Kurtas", etc.
+          
+          if (filterStr === 'dresses') {
+            return categoryStr.includes('dress') || categoryStr.includes('gown') || categoryStr.includes('jumpsuit');
+          } else if (filterStr === 'sets') {
+            return categoryStr.includes('set') && !categoryStr.includes('kurta');
+          } else if (filterStr === 'bottoms') {
+            return categoryStr.includes('pant') || categoryStr.includes('trouser') || 
+                   categoryStr.includes('legging') || categoryStr.includes('palazzo') || 
+                   categoryStr.includes('culotte') || categoryStr.includes('skirt') || 
+                   categoryStr.includes('jegging');
+          } else if (filterStr === 'kurtas') {
+            return categoryStr.includes('kurta') && !categoryStr.includes('set');
+          } else if (filterStr === 'wedding') {
+            return categoryStr.includes('wedding') || categoryStr.includes('bridal') || 
+                   categoryStr.includes('lehenga') || categoryStr.includes('saree');
+          } else {
+            // Default: check if category contains the filter word
+            return categoryStr.includes(filterStr);
+          }
+        });
         setProducts(filtered);
-        setLoading(false);
-        return;
+      } else {
+        // Show all products if no filter
+        setProducts(res.data);
       }
-      
-      if (params.length > 0) {
-        url += '?' + params.join('&');
-      }
-      
-      const res = await axios.get(url);
-      setProducts(res.data);
     } catch (error) {
       console.error('Error fetching products:', error);
     } finally {
@@ -142,6 +198,7 @@ export default function WomenProductsAdmin({ filterGroup = null }) {
       title: product.title,
       description: product.description || '',
       category: product.category,
+      categorySlug: product.categorySlug || product.category,
       price: product.price || '',
       sizes: product.sizes || [],
       colors: product.colors || [],
@@ -178,6 +235,7 @@ export default function WomenProductsAdmin({ filterGroup = null }) {
       title: '',
       description: '',
       category: '',
+      categorySlug: '',
       price: '',
       sizes: [],
       colors: [],
@@ -198,6 +256,22 @@ export default function WomenProductsAdmin({ filterGroup = null }) {
 
   return (
     <div className="space-y-6">
+      {/* Helper Message */}
+      <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
+        <div className="flex">
+          <div className="flex-shrink-0">
+            <svg className="h-5 w-5 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+            </svg>
+          </div>
+          <div className="ml-3">
+            <p className="text-sm text-blue-700">
+              <strong>Note:</strong> Old products have old category names. Click <strong>Edit</strong> on each product and select the correct category from the dropdown to update them.
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* Form Section */}
       <div className="bg-white rounded-xl shadow-lg p-6">
         <h3 className="text-xl font-bold mb-4 text-gray-800">
@@ -218,30 +292,33 @@ export default function WomenProductsAdmin({ filterGroup = null }) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Category *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Category * {loadingCategories && <span className="text-xs text-gray-500">(Loading...)</span>}
+              </label>
               <select
-                value={formData.category}
-                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                value={formData.categorySlug}
+                onChange={(e) => {
+                  const selectedCategory = menuCategories.find(cat => cat.slug === e.target.value);
+                  setFormData({ 
+                    ...formData, 
+                    categorySlug: e.target.value,
+                    category: selectedCategory ? selectedCategory.name : e.target.value
+                  });
+                }}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
                 required
+                disabled={loadingCategories}
               >
                 <option value="">Select Category</option>
-                {filterGroup && CATEGORIES[filterGroup] ? (
-                  // Show only categories from current group
-                  currentCategories.map(cat => (
-                    <option key={cat} value={cat}>{cat}</option>
-                  ))
-                ) : (
-                  // Show all categories grouped
-                  Object.entries(CATEGORIES).map(([group, cats]) => (
-                    <optgroup key={group} label={group}>
-                      {cats.map(cat => (
-                        <option key={cat} value={cat}>{cat}</option>
-                      ))}
-                    </optgroup>
-                  ))
-                )}
+                {menuCategories.map(cat => (
+                  <option key={cat.slug} value={cat.slug}>
+                    {cat.name} ({cat.slug})
+                  </option>
+                ))}
               </select>
+              <p className="text-xs text-gray-500 mt-1">
+                Categories are synced from Menu Manager
+              </p>
             </div>
           </div>
 
@@ -396,18 +473,32 @@ export default function WomenProductsAdmin({ filterGroup = null }) {
       {/* Filter and List Section */}
       <div className="bg-white rounded-xl shadow-lg p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-xl font-bold text-gray-800">Women Products</h3>
-          <select
-            value={filterCategory}
-            onChange={(e) => setFilterCategory(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500"
-          >
-            <option value="">All {filterGroup || 'Categories'}</option>
-            {currentCategories.map(cat => (
-              <option key={cat} value={cat}>{cat}</option>
-            ))}
-          </select>
+          <h3 className="text-xl font-bold text-gray-800">
+            Women Products {filterGroup && `- ${filterGroup}`}
+          </h3>
+          <div className="text-sm text-gray-600">
+            Total: {products.filter(p => !filterCategory || p.category === filterCategory).length} products
+          </div>
         </div>
+
+        {/* Category Filter Dropdown */}
+        {products.length > 0 && (
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Filter by Category
+            </label>
+            <select
+              value={filterCategory}
+              onChange={(e) => setFilterCategory(e.target.value)}
+              className="w-full md:w-64 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+            >
+              <option value="">All Categories</option>
+              {[...new Set(products.map(p => p.category))].sort().map(cat => (
+                <option key={cat} value={cat}>{cat}</option>
+              ))}
+            </select>
+          </div>
+        )}
         
         {loading ? (
           <div className="text-center py-8">Loading...</div>
@@ -415,7 +506,9 @@ export default function WomenProductsAdmin({ filterGroup = null }) {
           <div className="text-center py-8 text-gray-500">No products yet</div>
         ) : (
           <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-            {products.map((product, index) => (
+            {products
+              .filter(product => !filterCategory || product.category === filterCategory)
+              .map((product, index) => (
               <motion.div
                 key={product._id}
                 initial={{ opacity: 0, y: 20 }}

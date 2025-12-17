@@ -39,6 +39,7 @@ import InquiryManager from "./InquiryManager/InquiryManager"; // <-- Inquiry Man
 import ContactManager from "./ContactManager/ContactManager"; // <-- Contact Management section
 import EmailStatus from "./EmailStatus/EmailStatus"; // <-- Email Status section
 import StatsAdmin from "./StatsAdmin/StatsAdmin"; // <-- Stats Counter section
+import MenuManager from "./MenuManager"; // <-- Menu/Navigation Manager
 
 /* ====== Small presentational helpers moved here for clarity ====== */
 function NavItem({ label, icon, onClick, active }) {
@@ -643,6 +644,13 @@ export default function Dashboard() {
           </section>
         );
 
+      case "menuManager":
+        return (
+          <section className="admin-card p-6">
+            <MenuManager />
+          </section>
+        );
+
       case "inquiries":
         return (
           <section className="admin-card p-6">
@@ -689,6 +697,22 @@ export default function Dashboard() {
         );
 
       // Women Sections
+      case "womenAllProducts":
+        return (
+          <section className="admin-card p-6">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h2 className="text-2xl font-bold gradient-text">All Women Products</h2>
+                <p className="text-gray-600 mt-1">View and manage all women products</p>
+              </div>
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-rose-500 to-pink-500 flex items-center justify-center text-white shadow-lg animate-float">
+                <FiGrid className="w-8 h-8" />
+              </div>
+            </div>
+            <WomenProductsAdmin />
+          </section>
+        );
+
       case "womenDresses":
         return (
           <section className="admin-card p-6">
@@ -791,13 +815,13 @@ export default function Dashboard() {
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h2 className="text-2xl font-bold gradient-text">Women - Wedding Collection</h2>
-                <p className="text-gray-600 mt-1">Special wedding collection</p>
+                <p className="text-gray-600 mt-1">Bridal Lehengas, Silk Sarees, Cotton Sarees</p>
               </div>
               <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-rose-500 to-pink-500 flex items-center justify-center text-white shadow-lg animate-float">
                 <FiGrid className="w-8 h-8" />
               </div>
             </div>
-            <WomenProductsAdmin filterGroup="Others" />
+            <WomenProductsAdmin filterGroup="Wedding" />
           </section>
         );
 
@@ -1065,12 +1089,11 @@ export default function Dashboard() {
                     Women Products
                   </div>
                   <div className="space-y-2">
+                    <NavItem label="All Products" icon={<FiGrid />} active={activeTab === "womenAllProducts"} onClick={() => { setActiveTab("womenAllProducts"); setSidebarOpen(false); }} />
                     <NavItem label="Dresses" icon={<FiGrid />} active={activeTab === "womenDresses"} onClick={() => { setActiveTab("womenDresses"); setSidebarOpen(false); }} />
                     <NavItem label="Sets" icon={<FiGrid />} active={activeTab === "womenSets"} onClick={() => { setActiveTab("womenSets"); setSidebarOpen(false); }} />
                     <NavItem label="Bottoms" icon={<FiGrid />} active={activeTab === "womenBottoms"} onClick={() => { setActiveTab("womenBottoms"); setSidebarOpen(false); }} />
                     <NavItem label="Kurtas" icon={<FiGrid />} active={activeTab === "womenKurtas"} onClick={() => { setActiveTab("womenKurtas"); setSidebarOpen(false); }} />
-                    <NavItem label="Saree Collections" icon={<FiGrid />} active={activeTab === "womenSarees"} onClick={() => { setActiveTab("womenSarees"); setSidebarOpen(false); }} />
-                    <NavItem label="Lehenga Collections" icon={<FiGrid />} active={activeTab === "womenLehengas"} onClick={() => { setActiveTab("womenLehengas"); setSidebarOpen(false); }} />
                     <NavItem label="Wedding" icon={<FiGrid />} active={activeTab === "womenWedding"} onClick={() => { setActiveTab("womenWedding"); setSidebarOpen(false); }} />
                   </div>
                 </>
@@ -1125,6 +1148,11 @@ export default function Dashboard() {
               {/* Common Sections - Only in Women Mode */}
               {categoryMode === 'women' && (
                 <>
+                  <div className="text-xs font-bold text-gray-600 uppercase tracking-wider px-2 mt-6">Site Management</div>
+                  <div className="space-y-2">
+                    <NavItem label="Menu Manager" icon={<FiMenu />} active={activeTab === "menuManager"} onClick={() => { setActiveTab("menuManager"); setSidebarOpen(false); }} />
+                  </div>
+
                   <div className="text-xs font-bold text-gray-600 uppercase tracking-wider px-2 mt-6">Customer Management</div>
                   <div className="space-y-2">
                     <NavItem label="Product Inquiries" icon={<FiMenu />} active={activeTab === "inquiries"} onClick={() => { setActiveTab("inquiries"); setSidebarOpen(false); }} />
