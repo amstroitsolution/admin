@@ -3,8 +3,6 @@ name: Deploy Admin
 on:
   push:
     branches: [ main ]
-    paths:
-      - 'admin/**'
   workflow_dispatch:
 
 jobs:
@@ -21,11 +19,9 @@ jobs:
         node-version: '18'
         
     - name: Install dependencies
-      working-directory: ./admin
       run: npm ci
       
     - name: Build admin
-      working-directory: ./admin
       env:
         VITE_API_BASE_URL: https://api.yashper.com
       run: npm run build
@@ -37,9 +33,9 @@ jobs:
         username: ${{ secrets.VPS_USERNAME }}
         password: ${{ secrets.VPS_PASSWORD }}
         port: ${{ secrets.VPS_PORT }}
-        source: "admin/dist/*"
+        source: "dist/*"
         target: "/tmp/admin-deploy"
-        strip_components: 2
+        strip_components: 1
         
     - name: Move files to public_html
       uses: appleboy/ssh-action@master
