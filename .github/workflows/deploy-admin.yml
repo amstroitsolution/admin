@@ -1,0 +1,57 @@
+name: Deploy Admin
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'admin/**'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        
+    - name: Install dependencies
+      working-directory: ./admin
+      run: npm ci
+      
+    - name: Build admin
+      working-directory: ./admin
+      env:
+        VITE_API_BASE_URL: https://api.yashper.com
+      run: npm run build
+      
+    - name: Deploy to VPS
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USERNAME }}
+        password: ${{ secrets.VPS_PASSWORD }}
+        port: ${{ secrets.VPS_PORT }}
+        source: "admin/dist/*"
+        target: "/tmp/admin-deploy"
+        strip_components: 2
+        
+    - name: Move files to public_html
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USERNAME }}
+        password: ${{ secrets.VPS_PASSWORD }}
+        port: ${{ secrets.VPS_PORT }}
+        script: |
+          rm -rf /domains/admin.yashper.com/public_html/*
+          mv /tmp/admin-deploy/* /domains/admin.yashper.com/public_html/
+          rm -rf /tmp/admin-deploy
+          chown -R www-data:www-data /domains/admin.yashper.com/public_html
+          chmod -R 755 /domains/admin.yashper.com/public_html
+          echo "Admin deployed successfully!"
