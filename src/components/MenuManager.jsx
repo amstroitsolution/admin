@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FaPlus, FaEdit, FaTrash, FaSave, FaTimes, FaChevronDown, FaChevronUp } from 'react-icons/fa';
 
-const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+const API_URL = import.meta.env.VITE_API_BASE_URL || 'https://api.yashper.com';
 
 export default function MenuManager() {
   const [menuItems, setMenuItems] = useState([]);

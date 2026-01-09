@@ -22,24 +22,23 @@ import HomeServicesAdmin from "./HomeServicesAdmin";
 import AddWork from "./AddWork";
 import WorkList from "./WorkList";
 import OurValuesAdmin from "./OurValuesAdmin";
-import SlowFashionAdmin from "./SlowFashionAdmin";
 import WatchBuyAdmin from "./WatchBuy/WatchBuyAdmin";
-import HeroAdmin from "./HeroAdmin/HeroAdmin"; // <-- Hero section
-import KidsProductsAdmin from "./KidsProducts/KidsProductsAdmin"; // <-- Kids Products section
-import WomenProductsAdmin from "./WomenProducts/WomenProductsAdmin"; // <-- Women Products section
-import SectionsManager from "./SectionsManager/SectionsManager"; // <-- Dynamic Sections Manager
-import SectionDataManager from "./SectionDataManager/SectionDataManager"; // <-- Section Data Manager
-import KidsSectionsManager from "./KidsSectionsManager/KidsSectionsManager"; // <-- Kids Sections Manager
-import KidsSectionDataManager from "./KidsSectionDataManager/KidsSectionDataManager"; // <-- Kids Section Data Manager
-import TrendingItemsAdmin from "./TrendingItems/TrendingItemsAdmin"; // <-- Trending Items section
-import NewArrivalsAdmin from "./NewArrivals/NewArrivalsAdmin"; // <-- New Arrivals section
-import SpecialOffersAdmin from "./SpecialOffers/SpecialOffersAdmin"; // <-- Special Offers section
-import FeaturedCollectionsAdmin from "./FeaturedCollections/FeaturedCollectionsAdmin"; // <-- Featured Collections section
-import InquiryManager from "./InquiryManager/InquiryManager"; // <-- Inquiry Management section
-import ContactManager from "./ContactManager/ContactManager"; // <-- Contact Management section
-import EmailStatus from "./EmailStatus/EmailStatus"; // <-- Email Status section
-import StatsAdmin from "./StatsAdmin/StatsAdmin"; // <-- Stats Counter section
-import MenuManager from "./MenuManager"; // <-- Menu/Navigation Manager
+import HeroAdmin from "./HeroAdmin/HeroAdmin"; /// <-- Hero section
+import KidsHeroAdmin from "./KidsHomepage/KidsHeroAdmin"; /// <-- Kids Hero section
+import KidsProductsAdmin from "./KidsProducts/KidsProductsAdmin"; /// <-- Kids Products section
+import WomenProductsAdmin from "./WomenProducts/WomenProductsAdmin"; /// <-- Women Products section
+import SectionsManager from "./SectionsManager/SectionsManager"; /// <-- Dynamic Sections Manager
+import SectionDataManager from "./SectionDataManager/SectionDataManager"; /// <-- Section Data Manager
+import KidsSectionsManager from "./KidsSectionsManager/KidsSectionsManager"; /// <-- Kids Sections Manager
+import KidsSectionDataManager from "./KidsSectionDataManager/KidsSectionDataManager"; /// <-- Kids Section Data Manager
+import TrendingItemsAdmin from "./TrendingItems/TrendingItemsAdmin"; /// <-- Trending Items section
+import NewArrivalsAdmin from "./NewArrivals/NewArrivalsAdmin"; /// <-- New Arrivals section
+import SpecialOffersAdmin from "./SpecialOffers/SpecialOffersAdmin"; /// <-- Special Offers section
+import FeaturedCollectionsAdmin from "./FeaturedCollections/FeaturedCollectionsAdmin"; /// <-- Featured Collections section
+import InquiryManager from "./InquiryManager/InquiryManager"; /// <-- Inquiry Management section
+import ContactManager from "./ContactManager/ContactManager"; /// <-- Contact Management section
+import EmailStatus from "./EmailStatus/EmailStatus"; /// <-- Email Status section
+import MenuManager from "./MenuManager"; /// <-- Menu/Navigation Manager
 
 /* ====== Small presentational helpers moved here for clarity ====== */
 function NavItem({ label, icon, onClick, active }) {
@@ -48,9 +47,8 @@ function NavItem({ label, icon, onClick, active }) {
       whileHover={{ scale: 1.02, x: 4 }}
       whileTap={{ scale: 0.98 }}
       onClick={onClick}
-      className={`admin-nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
-        active ? "admin-nav-item active text-white shadow-lg" : "glass text-gray-700 border border-white/20 hover:bg-white/20"
-      }`}
+      className={`admin-nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${active ? "admin-nav-item active text-white shadow-lg" : "glass text-gray-700 border border-white/20 hover:bg-white/20"
+        }`}
     >
       <span className="text-lg">{icon}</span>
       <span className="flex-1 text-left">{label}</span>
@@ -111,7 +109,7 @@ function OverviewCard({ title, value, icon, color = "gray" }) {
 }
 
 /* ===================== Main Dashboard component ===================== */
-const API = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+const API = (import.meta.env.VITE_API_BASE_URL || "https://api.yashper.com").replace(/\/$/, "");
 
 export default function Dashboard() {
   // UI state
@@ -134,7 +132,6 @@ export default function Dashboard() {
     galleries: 0,
     works: 0,
     ourValues: 0,
-    slowFashion: 0,
     hero: 0,
     watchBuy: 0,
   });
@@ -213,15 +210,6 @@ export default function Dashboard() {
     }
   }, []);
 
-  const fetchSlowFashion = useCallback(async () => {
-    try {
-      const res = await axios.get(`${API}/api/slow-fashion`);
-      const items = Array.isArray(res.data) ? res.data : [];
-      setCounts((c) => ({ ...c, slowFashion: items.length }));
-    } catch (err) {
-      console.error("fetchSlowFashion error:", err);
-    }
-  }, []);
 
   const fetchHero = useCallback(async () => {
     try {
@@ -249,7 +237,6 @@ export default function Dashboard() {
     fetchGalleries();
     fetchWorks();
     fetchOurValues();
-    fetchSlowFashion();
     fetchHero();
     fetchWatchBuy();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -344,7 +331,6 @@ export default function Dashboard() {
     fetchGalleries();
     fetchWorks();
     fetchOurValues();
-    fetchSlowFashion();
     fetchHero();
     fetchWatchBuy();
   };
@@ -363,12 +349,11 @@ export default function Dashboard() {
             <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
               <OverviewCard title="Hero Slides" value={formatNumber(counts.hero)} icon={<FiImage className="w-6 h-6" />} color="purple" />
               <OverviewCard title="Our Values" value={formatNumber(counts.ourValues)} icon={<FiGrid className="w-6 h-6" />} color="blue" />
-              <OverviewCard title="Slow Fashion" value={formatNumber(counts.slowFashion)} icon={<FiLayers className="w-6 h-6" />} color="green" />
               <OverviewCard title="Watch & Buy" value={formatNumber(counts.watchBuy)} icon={<FiImage className="w-6 h-6" />} color="amber" />
               <OverviewCard title="Sarees" value={formatNumber(counts.sarees)} icon={<FiGrid className="w-6 h-6" />} color="red" />
               <OverviewCard title="Galleries" value={formatNumber(counts.galleries)} icon={<FiImage className="w-6 h-6" />} color="amber" />
               <OverviewCard title="Recent Works" value={formatNumber(counts.works)} icon={<FiLayers className="w-6 h-6" />} color="green" />
-              <OverviewCard title="Total Sections" value={formatNumber(counts.hero + counts.ourValues + counts.slowFashion + counts.watchBuy)} icon={<FiGrid className="w-6 h-6" />} color="blue" />
+              <OverviewCard title="Total Sections" value={formatNumber(counts.hero + counts.ourValues + counts.watchBuy)} icon={<FiGrid className="w-6 h-6" />} color="blue" />
             </div>
 
             <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
@@ -382,10 +367,6 @@ export default function Dashboard() {
                   <button onClick={() => setActiveTab("ourValues")} className="w-full text-left px-4 py-3 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg hover:shadow-md transition-all">
                     <div className="font-medium text-gray-800">Edit Our Values</div>
                     <div className="text-sm text-gray-600">Manage company values section</div>
-                  </button>
-                  <button onClick={() => setActiveTab("slowFashion")} className="w-full text-left px-4 py-3 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg hover:shadow-md transition-all">
-                    <div className="font-medium text-gray-800">Slow Fashion Section</div>
-                    <div className="text-sm text-gray-600">Update slow fashion content</div>
                   </button>
                   <button onClick={() => setActiveTab("watchbuy")} className="w-full text-left px-4 py-3 bg-gradient-to-r from-pink-50 to-white rounded-lg hover:shadow-md transition-all">
                     <div className="font-medium text-gray-800">Watch & Buy Collection</div>
@@ -408,7 +389,7 @@ export default function Dashboard() {
                     <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
                     <div className="flex-1">
                       <div className="font-medium text-gray-800">Content Sections</div>
-                      <div className="text-gray-600">{counts.hero + counts.ourValues + counts.slowFashion + counts.watchBuy} active sections</div>
+                      <div className="text-gray-600">{counts.hero + counts.ourValues + counts.watchBuy} active sections</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
@@ -557,9 +538,7 @@ export default function Dashboard() {
 
       case "ourValues":
         return <section className="space-y-4"><OurValuesAdmin /></section>;
-      case "slowFashion":
-        return <section className="space-y-4"><SlowFashionAdmin /></section>;
-      
+
 
 
       case "galleryView":
@@ -672,12 +651,6 @@ export default function Dashboard() {
           </section>
         );
 
-      case "stats":
-        return (
-          <section className="admin-card p-6">
-            <StatsAdmin />
-          </section>
-        );
 
       case "hero":
         // NEW: Hero section admin panel
@@ -937,37 +910,69 @@ export default function Dashboard() {
           </section>
         );
 
-      // Kids Homepage Sections - Redirect to Sections Manager
+      // Kids Hero Banner
       case "kidsHero":
+        return (
+          <section className="admin-card p-6">
+            <KidsHeroAdmin />
+          </section>
+        );
+
+      // Kids Trending - Show products with featured=true or recent
       case "kidsTrending":
+        return (
+          <section className="admin-card p-6">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold text-gray-800 mb-2">Kids Trending Section</h2>
+              <p className="text-gray-600">Manage trending kids products. Products marked as "Featured" will appear in the Trending section.</p>
+            </div>
+            <KidsProductsAdmin filterGroup="Trending" />
+          </section>
+        );
+
+      // Kids New Arrivals - Show recent products or with NEW badge
       case "kidsNewArrivals":
+        return (
+          <section className="admin-card p-6">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold text-gray-800 mb-2">Kids New Arrivals Section</h2>
+              <p className="text-gray-600">Manage new arrival products. Add products with "NEW" badge or recently added products will appear here.</p>
+              <div className="mt-4 bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
+                <p className="text-sm text-blue-800">
+                  <strong>Tip:</strong> Set Badge to "NEW" when adding products to feature them in New Arrivals section.
+                </p>
+              </div>
+            </div>
+            <KidsProductsAdmin />
+          </section>
+        );
+
+      // Kids Special Offers - Show products with discounts
       case "kidsSpecialOffers":
+        return (
+          <section className="admin-card p-6">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold text-gray-800 mb-2">Kids Special Offers Section</h2>
+              <p className="text-gray-600">Manage special offer products. Products with discounts or "SALE" badge will appear here.</p>
+              <div className="mt-4 bg-red-50 border-l-4 border-red-500 p-4 rounded">
+                <p className="text-sm text-red-800">
+                  <strong>Tip:</strong> Set Original Price and Discount % to show products in Special Offers section.
+                </p>
+              </div>
+            </div>
+            <KidsProductsAdmin />
+          </section>
+        );
+
+      // Kids Collections - Show all products
       case "kidsCollections":
         return (
           <section className="admin-card p-6">
-            <div className="text-center py-12">
-              <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white">
-                <FiLayers className="w-12 h-12" />
-              </div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-3">Use Dynamic Sections Manager</h2>
-              <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-                Kids homepage sections are managed through the <strong>Sections Manager</strong> and <strong>Section Data Manager</strong> for maximum flexibility.
-              </p>
-              <div className="flex gap-4 justify-center">
-                <button
-                  onClick={() => setActiveTab('kidsSectionsManager')}
-                  className="px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-lg hover:shadow-lg transition-all font-medium"
-                >
-                  Go to Sections Manager
-                </button>
-                <button
-                  onClick={() => setActiveTab('kidsSectionData')}
-                  className="px-6 py-3 bg-white border-2 border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition-all font-medium"
-                >
-                  Go to Section Data
-                </button>
-              </div>
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold text-gray-800 mb-2">Kids Collections Section</h2>
+              <p className="text-gray-600">Manage all kids products that appear in the main collection section.</p>
             </div>
+            <KidsProductsAdmin />
           </section>
         );
 
@@ -1009,9 +1014,9 @@ export default function Dashboard() {
             <motion.button className="lg:hidden p-2 rounded-xl hover:bg-white/20" onClick={() => setSidebarOpen((s) => !s)}><FiMenu className="w-6 h-6 text-gray-700" /></motion.button>
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-2xl bg-white flex items-center justify-center shadow-lg overflow-hidden">
-                <img 
-                  src={yashperLogo} 
-                  alt="Yashper Logo" 
+                <img
+                  src={yashperLogo}
+                  alt="Yashper Logo"
                   className="w-full h-full object-contain"
                 />
               </div>
@@ -1046,8 +1051,8 @@ export default function Dashboard() {
               <motion.div animate={refreshing ? { rotate: 360 } : {}} transition={{ duration: 1, repeat: refreshing ? Infinity : 0 }}><FiRefreshCw /></motion.div>
               <span className="hidden lg:inline">{refreshing ? "Refreshing..." : "Refresh All"}</span>
             </motion.button>
-            <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => { localStorage.removeItem("admin_token"); localStorage.removeItem("admin_info"); window.location.href = "/admin/login"; }} className="inline-flex items-center gap-2 px-4 py-2 text-white rounded-xl text-sm shadow-lg" style={{ background: 'linear-gradient(to right, #de3cad, #e854c1)' }}> 
-              <FiLogOut /> 
+            <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => { localStorage.removeItem("admin_token"); localStorage.removeItem("admin_info"); window.location.href = "/admin/login"; }} className="inline-flex items-center gap-2 px-4 py-2 text-white rounded-xl text-sm shadow-lg" style={{ background: 'linear-gradient(to right, #de3cad, #e854c1)' }}>
+              <FiLogOut />
               <span className="hidden sm:inline">Logout</span>
             </motion.button>
           </div>
@@ -1078,10 +1083,8 @@ export default function Dashboard() {
                     <NavItem label="Special Offers" icon={<FiLayers />} active={activeTab === "specialOffers"} onClick={() => { setActiveTab("specialOffers"); setSidebarOpen(false); }} />
                     <NavItem label="Featured Collections" icon={<FiImage />} active={activeTab === "featuredCollections"} onClick={() => { setActiveTab("featuredCollections"); setSidebarOpen(false); }} />
                     <NavItem label="Our Values" icon={<FiGrid />} active={activeTab === "ourValues"} onClick={() => { setActiveTab("ourValues"); setSidebarOpen(false); }} />
-                    <NavItem label="Slow Fashion" icon={<FiLayers />} active={activeTab === "slowFashion"} onClick={() => { setActiveTab("slowFashion"); setSidebarOpen(false); }} />
 
                     <NavItem label="Watch & Buy" icon={<FiImage />} active={activeTab === "watchbuy"} onClick={() => { setActiveTab("watchbuy"); setSidebarOpen(false); }} />
-                    <NavItem label="Stats Counter" icon={<FiGrid />} active={activeTab === "stats"} onClick={() => { setActiveTab("stats"); setSidebarOpen(false); }} />
                   </div>
 
                   <div className="text-xs font-bold uppercase tracking-wider px-2 mt-6 flex items-center gap-2" style={{ color: '#de3cad' }}>
@@ -1252,3 +1255,4 @@ export default function Dashboard() {
     </div>
   );
 }
+

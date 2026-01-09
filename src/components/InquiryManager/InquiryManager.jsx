@@ -40,7 +40,7 @@ const InquiryManager = () => {
       if (filters.status) queryParams.append('status', filters.status);
       if (filters.productType) queryParams.append('productType', filters.productType);
       
-      const response = await fetch(`http://localhost:5000/api/inquiries?${queryParams}`);
+      const response = await fetch(`https://api.yashper.com/api/inquiries?${queryParams}`);
       if (response.ok) {
         const data = await response.json();
         let filteredData = data;
@@ -70,7 +70,7 @@ const InquiryManager = () => {
 
   const handleUpdateStatus = async (inquiryId, newStatus) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/inquiries/${inquiryId}`, {
+      const response = await fetch(`https://api.yashper.com/api/inquiries/${inquiryId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -108,7 +108,7 @@ const InquiryManager = () => {
     
     setIsResponding(true);
     try {
-      const response = await fetch(`http://localhost:5000/api/inquiries/${selectedInquiry._id}/reply`, {
+      const response = await fetch(`https://api.yashper.com/api/inquiries/${selectedInquiry._id}/reply`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -141,7 +141,7 @@ const InquiryManager = () => {
     
     setIsResponding(true);
     try {
-      const response = await fetch(`http://localhost:5000/api/inquiries/${selectedInquiry._id}`, {
+      const response = await fetch(`https://api.yashper.com/api/inquiries/${selectedInquiry._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -174,7 +174,7 @@ const InquiryManager = () => {
     if (!confirm('Are you sure you want to delete this inquiry?')) return;
     
     try {
-      const response = await fetch(`http://localhost:5000/api/inquiries/${inquiryId}`, {
+      const response = await fetch(`https://api.yashper.com/api/inquiries/${inquiryId}`, {
         method: 'DELETE'
       });
 
@@ -458,7 +458,7 @@ const InquiryManager = () => {
                   <div className="flex items-center space-x-4">
                     {selectedInquiry.productId?.images?.[0] && (
                       <img
-                        src={`http://localhost:5000${selectedInquiry.productId.images[0]}`}
+                        src={`https://api.yashper.com${selectedInquiry.productId.images[0]}`}
                         alt={selectedInquiry.productId.title || selectedInquiry.productId.name}
                         className="w-16 h-16 object-cover rounded-lg"
                       />

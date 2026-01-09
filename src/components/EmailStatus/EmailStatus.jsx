@@ -12,7 +12,7 @@ const EmailStatus = () => {
   const fetchSavedEmails = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:5000/api/contact/saved-emails');
+      const response = await fetch('https://api.yashper.com/api/contact/saved-emails');
       const data = await response.json();
       
       if (data.success) {

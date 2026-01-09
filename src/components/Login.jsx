@@ -22,7 +22,7 @@ export default function Login() {
   const nav = useNavigate();
 
   // ✅ environment variables (safe fallback)
-  const API = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+  const API = (import.meta.env.VITE_API_BASE_URL || "https://api.yashper.com").replace(/\/$/, "");
   const ALLOWED_EMAIL =
     import.meta.env.VITE_ADMIN_EMAIL || "rajanpbh03@gmail.com";
 
@@ -50,11 +50,23 @@ export default function Login() {
 
     setLoading(true);
     try {
-      const res = await fetch(`${API}/api/auth/login`, {
+      // 🔗 clean API URL (remove trailing slash if any)
+      const baseApi = API.endsWith("/") ? API.slice(0, -1) : API;
+      const res = await fetch(`${baseApi}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
+
+      // 🛡️ Safe JSON parsing
+      const contentType = res.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        const text = await res.text();
+        console.error("Non-JSON response:", text);
+        setError("Invalid server response (not JSON)");
+        setLoading(false);
+        return;
+      }
 
       const data = await res.json();
 
@@ -84,9 +96,9 @@ export default function Login() {
         <div className="absolute top-1/4 left-1/4 w-[clamp(20rem,40vw,31.25rem)] h-[clamp(20rem,40vw,31.25rem)] rounded-full blur-3xl animate-pulse-slow" style={{ background: 'linear-gradient(to right, rgba(222, 60, 173, 0.2), rgba(255, 255, 255, 0.15), rgba(222, 60, 173, 0.2))' }}></div>
         <div
           className="absolute bottom-1/4 right-1/4 w-[clamp(15rem,30vw,25rem)] h-[clamp(15rem,30vw,25rem)] rounded-full blur-3xl animate-pulse-slow"
-          style={{ 
+          style={{
             background: 'linear-gradient(to right, rgba(255, 255, 255, 0.2), rgba(222, 60, 173, 0.15), rgba(255, 255, 255, 0.2))',
-            animationDelay: "1s" 
+            animationDelay: "1s"
           }}
         ></div>
 
@@ -127,9 +139,9 @@ export default function Login() {
         <div className="bg-white/10 backdrop-blur-2xl rounded-[2rem] p-[2rem] border border-white/20 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.25)] relative overflow-hidden">
           <div className="text-center mb-10">
             <div className="inline-flex items-center justify-center w-20 h-20 bg-white rounded-2xl mb-5 overflow-hidden" style={{ boxShadow: '0 20px 40px -12px rgba(222, 60, 173, 0.4)' }}>
-              <img 
-                src={yashperLogo} 
-                alt="Yashper Logo" 
+              <img
+                src={yashperLogo}
+                alt="Yashper Logo"
                 className="w-full h-full object-contain"
               />
             </div>

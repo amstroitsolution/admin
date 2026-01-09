@@ -149,7 +149,7 @@ This admin panel manages all content sections for the Goodluck Textile website, 
 2. Install dependencies: `npm install`
 3. Create `.env` file with:
    ```
-   VITE_API_BASE_URL=http://localhost:5000
+   VITE_API_BASE_URL=http://localhost:5000/
    ```
 4. Start dev server: `npm run dev`
 5. Access admin at: `http://localhost:5174/admin/login`

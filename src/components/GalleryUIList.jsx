@@ -4,14 +4,14 @@ const GalleryUIList = () => {
   const [gallery, setGallery] = useState([]);
 
   const fetchGallery = async () => {
-    const res = await fetch("http://localhost:5000/api/gallery-ui");
+    const res = await fetch("https://api.yashper.com/api/gallery-ui");
     const data = await res.json();
     setGallery(data);
   };
 
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this item?")) return;
-    await fetch(`http://localhost:5000/api/gallery-ui/${id}`, {
+    await fetch(`https://api.yashper.com/api/gallery-ui/${id}`, {
       method: "DELETE",
     });
     fetchGallery();
@@ -32,7 +32,7 @@ const GalleryUIList = () => {
           {gallery.map((item) => (
             <div key={item._id} className="border rounded-lg shadow p-2">
               <img
-                src={`http://localhost:5000${item.image}`}
+                src={`https://api.yashper.com${item.image}`}
                 alt={item.title}
                 className="w-full h-32 object-cover rounded"
               />

@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import axios from 'axios';
 import { FiPlus, FiEdit2, FiTrash2, FiEye, FiEyeOff, FiUpload, FiX, FiImage, FiVideo } from 'react-icons/fi';
 
-const API = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+const API = (import.meta.env.VITE_API_BASE_URL || 'https://api.yashper.com').replace(/\/$/, "");
 
 export default function HeroAdmin() {
   const [heroes, setHeroes] = useState([]);
@@ -65,7 +65,7 @@ export default function HeroAdmin() {
       }
 
       const formDataToSend = new FormData();
-      
+
       // Append all form fields
       Object.keys(formData).forEach(key => {
         formDataToSend.append(key, formData[key]);
@@ -81,14 +81,14 @@ export default function HeroAdmin() {
 
       if (editingId) {
         await axios.put(`${API}/api/hero/${editingId}`, formDataToSend, {
-          headers: { 
+          headers: {
             Authorization: `Bearer ${token}`
           }
         });
         alert('Hero slide updated successfully!');
       } else {
         await axios.post(`${API}/api/hero`, formDataToSend, {
-          headers: { 
+          headers: {
             Authorization: `Bearer ${token}`
           }
         });
@@ -114,15 +114,15 @@ export default function HeroAdmin() {
       order: hero.order || 0
     });
     setEditingId(hero._id);
-    
+
     // Show existing media as previews
     if (hero.backgroundImage) {
-      setImagePreview(`${API}${hero.backgroundImage}`);
+      setImagePreview(hero.backgroundImage.startsWith('http') ? hero.backgroundImage : `${API}${hero.backgroundImage}`);
     }
     if (hero.backgroundVideo) {
-      setVideoPreview(`${API}${hero.backgroundVideo}`);
+      setVideoPreview(hero.backgroundVideo.startsWith('http') ? hero.backgroundVideo : `${API}${hero.backgroundVideo}`);
     }
-    
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -166,7 +166,7 @@ export default function HeroAdmin() {
         <h3 className="text-xl font-bold mb-4 text-gray-800">
           {editingId ? 'Edit Hero Slide' : 'Add New Hero Slide'}
         </h3>
-        
+
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -369,7 +369,7 @@ export default function HeroAdmin() {
       {/* List Section */}
       <div className="bg-white rounded-xl shadow-lg p-6">
         <h3 className="text-xl font-bold mb-4 text-gray-800">Hero Slides</h3>
-        
+
         {loading ? (
           <div className="text-center py-8">Loading...</div>
         ) : heroes.length === 0 ? (
@@ -388,7 +388,7 @@ export default function HeroAdmin() {
                   <div className="w-32 h-20 flex-shrink-0">
                     {hero.backgroundImage ? (
                       <img
-                        src={`${API}${hero.backgroundImage}`}
+                        src={hero.backgroundImage.startsWith('http') ? hero.backgroundImage : `${API}${hero.backgroundImage}`}
                         alt={hero.title}
                         className="w-full h-full object-cover rounded"
                       />
@@ -398,7 +398,7 @@ export default function HeroAdmin() {
                       </div>
                     )}
                   </div>
-                  
+
                   <div className="flex-1">
                     <div className="flex items-start justify-between">
                       <div>
@@ -413,7 +413,7 @@ export default function HeroAdmin() {
                           </span>
                         )}
                       </div>
-                      
+
                       <div className="flex items-center gap-2">
                         {hero.isActive ? (
                           <span className="flex items-center gap-1 text-xs text-green-600 bg-green-50 px-2 py-1 rounded">
@@ -426,7 +426,7 @@ export default function HeroAdmin() {
                         )}
                       </div>
                     </div>
-                    
+
                     <div className="flex gap-2 mt-3">
                       <button
                         onClick={() => handleEdit(hero)}
@@ -451,3 +451,4 @@ export default function HeroAdmin() {
     </div>
   );
 }
+

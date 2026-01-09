@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import axios from 'axios';
 import { FiPlus, FiEdit2, FiTrash2, FiUpload, FiX, FiArrowLeft } from 'react-icons/fi';
 
-const API = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+const API = (import.meta.env.VITE_API_BASE_URL || 'https://api.yashper.com').replace(/\/$/, "");
 
 export default function SectionDataManager() {
   const [sections, setSections] = useState([]);
@@ -504,3 +504,4 @@ export default function SectionDataManager() {
     </div>
   );
 }
+

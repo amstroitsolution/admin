@@ -13,7 +13,7 @@ export default function EditWatchBuy() {
   });
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/api/watchbuy/${id}`).then((res) => {
+    axios.get(`https://api.yashper.com/api/watchbuy/${id}`).then((res) => {
       setFormData(res.data);
     });
   }, [id]);
@@ -25,7 +25,7 @@ export default function EditWatchBuy() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:5000/api/watchbuy/${id}`, formData);
+      await axios.put(`https://api.yashper.com/api/watchbuy/${id}`, formData);
       alert("Updated successfully!");
     } catch (err) {
       console.error("Update failed:", err);

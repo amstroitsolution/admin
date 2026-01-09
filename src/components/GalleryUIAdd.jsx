@@ -31,7 +31,7 @@ const GalleryUIAdd = () => {
     data.append("image", image);
 
     try {
-      const res = await fetch("http://localhost:5000/api/gallery-ui/add", {
+      const res = await fetch("https://api.yashper.com/api/gallery-ui/add", {
         method: "POST",
         body: data,
       });

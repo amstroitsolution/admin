@@ -8,7 +8,7 @@ const ServicesAdmin = () => {
 
   const fetchServices = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/services");
+      const res = await axios.get("https://api.yashper.com/api/services");
       setServices(res.data.services || []);
     } catch (err) {
       console.error(err);
@@ -20,7 +20,7 @@ const ServicesAdmin = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this service?")) return;
     try {
-      await axios.delete(`http://localhost:5000/api/services/admin/${id}`);
+      await axios.delete(`https://api.yashper.com/api/services/admin/${id}`);
       setServices((prev) => prev.filter((s) => s._id !== id));
     } catch (err) {
       console.error(err);

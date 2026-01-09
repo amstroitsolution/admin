@@ -14,7 +14,7 @@ const EditService = () => {
 
   const fetchService = async () => {
     try {
-      const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+      const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://api.yashper.com";
       const res = await axios.get(`${API_BASE}/api/services`);
       const found = res.data.services.find((s) => s._id === id);
       if (found) setForm(found);
@@ -30,7 +30,7 @@ const EditService = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+      const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://api.yashper.com";
       await axios.patch(`${API_BASE}/api/services/admin/${id}`, form);
       alert("✅ Service updated!");
       navigate("/services-admin");

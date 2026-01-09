@@ -8,7 +8,10 @@ import React, { useRef, useState } from "react";
  * - After success dispatches "gallery:added" event so dashboard can refresh
  */
 export default function AddGallery() {
-  const API = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+  // Ensure no trailing slash to avoid double-slash in URL (e.g. .com//api)
+  const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://api.yashper.com";
+  const API = API_BASE.replace(/\/$/, "");
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [visible, setVisible] = useState(true);
@@ -49,13 +52,25 @@ export default function AddGallery() {
       // append multiple files under field name 'images'
       files.forEach((f) => form.append("images", f));
 
+      console.log(`Submitting to: ${API}/api/gallery`);
       const res = await fetch(`${API}/api/gallery`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: form,
       });
 
-      const data = await res.json();
+      // ✅ Safe Response Handling: Check if response is actually JSON
+      const contentType = res.headers.get("content-type");
+      let data;
+      if (contentType && contentType.includes("application/json")) {
+        data = await res.json();
+      } else {
+        // If server returns HTML (500/404), read as text to avoid "Unexpected token <" crash
+        const textStr = await res.text();
+        console.error(`Non-JSON response (${res.status} ${res.statusText}):`, textStr);
+        throw new Error(`Server error (${res.status}): The backend returned an invalid response. Check console logs.`);
+      }
+
       if (!res.ok) {
         setMsg(data.message || "Upload failed");
         setLoading(false);
@@ -74,7 +89,7 @@ export default function AddGallery() {
       // inform dashboard/admin list to refresh
       try {
         window.dispatchEvent(new Event("gallery:added"));
-      } catch (e) {}
+      } catch (e) { }
 
     } catch (err) {
       console.error("AddGallery error:", err);
@@ -172,3 +187,5 @@ export default function AddGallery() {
     </div>
   );
 }
+
+

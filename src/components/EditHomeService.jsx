@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://api.yashper.com";
 const API = `${API_BASE}/api/home-services`;
 
 const EditHomeService = ({ item, onClose = () => {}, onUpdated = () => {} }) => {
@@ -30,7 +30,7 @@ const EditHomeService = ({ item, onClose = () => {}, onUpdated = () => {} }) => 
       buttonLink: item.buttonLink || "",
       order: item.order || 0,
     });
-    const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+    const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://api.yashper.com";
     setPreview(item.mediaUrl ? (item.mediaUrl.startsWith("http") ? item.mediaUrl : `${API_BASE}${item.mediaUrl}`) : null);
   }, [item]);
 
@@ -57,7 +57,7 @@ const EditHomeService = ({ item, onClose = () => {}, onUpdated = () => {} }) => 
       Object.keys(form).forEach((k) => fd.append(k, form[k]));
       if (file) fd.append("media", file);
 
-      const res = await axios.patch(`${API}/admin/${item._id}`, fd, {
+      const res = await axios.patch(`${API}admin/${item._id}`, fd, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
@@ -146,3 +146,4 @@ const EditHomeService = ({ item, onClose = () => {}, onUpdated = () => {} }) => 
 };
 
 export default EditHomeService;
+

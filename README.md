@@ -48,7 +48,7 @@ A modern, creative admin dashboard built with React, Framer Motion, and Tailwind
 3. **Set up environment variables**
    Create a `.env` file in the admin directory:
    ```env
-   VITE_API_BASE_URL=http://localhost:5000
+   VITE_API_BASE_URL=http://localhost:5000/
    VITE_ADMIN_EMAIL=your-admin@email.com
    ```
 

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import EditWorkModal from "./EditWorkModal";
 
-const API = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+const API = (import.meta.env.VITE_API_BASE_URL || "https://api.yashper.com").replace(/\/$/, "");
 const FALLBACK_ADMIN_TOKEN = import.meta.env.VITE_ADMIN_TOKEN || "";
 
 export default function WorkList() {
@@ -99,3 +99,4 @@ export default function WorkList() {
     </div>
   );
 }
+

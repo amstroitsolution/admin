@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { FiSave, FiEye, FiEyeOff } from 'react-icons/fi';
 import axios from 'axios';
 
-const API = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+const API = (import.meta.env.VITE_API_BASE_URL || 'https://api.yashper.com').replace(/\/$/, "");
 
 export default function TopStripAdmin() {
   const [loading, setLoading] = useState(false);
@@ -107,3 +107,4 @@ export default function TopStripAdmin() {
     </div>
   );
 }
+

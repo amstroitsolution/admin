@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import axios from 'axios';
 import { FiPlus, FiEdit2, FiTrash2, FiEye, FiEyeOff, FiUpload, FiX } from 'react-icons/fi';
 
-const API = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+const API = (import.meta.env.VITE_API_BASE_URL || 'https://api.yashper.com').replace(/\/$/, "");
 
 const GIRLS_CATEGORIES = [
   'Saree & Anarkali',
@@ -58,14 +58,21 @@ export default function KidsProductsAdmin({ gender = null, filterGroup = null })
     title: '',
     description: '',
     category: '',
+    categorySlug: '',
     price: '',
+    originalPrice: '',
+    discount: 0,
     sizes: [],
     colors: [],
+    material: '',
     ageGroup: '',
     gender: gender || 'Girls',
+    stock: 0,
+    badge: '',
     featured: false,
     isActive: true,
-    order: 0
+    order: 0,
+    tags: []
   });
   const [editingId, setEditingId] = useState(null);
   const [filterCategory, setFilterCategory] = useState('');
@@ -85,7 +92,7 @@ export default function KidsProductsAdmin({ gender = null, filterGroup = null })
     try {
       setLoading(true);
       let url = `${API}/api/kids-products?gender=${activeGender}`;
-      
+
       if (filterCategory) {
         url += `&category=${encodeURIComponent(filterCategory)}`;
       } else if (filterGroup && CATEGORY_GROUPS[activeGender] && CATEGORY_GROUPS[activeGender][filterGroup]) {
@@ -97,7 +104,7 @@ export default function KidsProductsAdmin({ gender = null, filterGroup = null })
         setLoading(false);
         return;
       }
-      
+
       const res = await axios.get(url);
       setProducts(res.data);
     } catch (error) {
@@ -110,7 +117,7 @@ export default function KidsProductsAdmin({ gender = null, filterGroup = null })
   const handleImageSelect = (e) => {
     const files = Array.from(e.target.files);
     setSelectedImages(files);
-    
+
     // Create previews
     const previews = files.map(file => URL.createObjectURL(file));
     setImagePreviews(previews);
@@ -133,7 +140,7 @@ export default function KidsProductsAdmin({ gender = null, filterGroup = null })
       }
 
       const formDataToSend = new FormData();
-      
+
       // Append all form fields
       Object.keys(formData).forEach(key => {
         if (key === 'sizes' || key === 'colors') {
@@ -150,14 +157,14 @@ export default function KidsProductsAdmin({ gender = null, filterGroup = null })
 
       if (editingId) {
         await axios.put(`${API}/api/kids-products/${editingId}`, formDataToSend, {
-          headers: { 
+          headers: {
             Authorization: `Bearer ${token}`
           }
         });
         alert('Product updated successfully!');
       } else {
         await axios.post(`${API}/api/kids-products`, formDataToSend, {
-          headers: { 
+          headers: {
             Authorization: `Bearer ${token}`
           }
         });
@@ -189,7 +196,7 @@ export default function KidsProductsAdmin({ gender = null, filterGroup = null })
     setEditingId(product._id);
     // Show existing images as previews
     if (product.images && product.images.length > 0) {
-      setImagePreviews(product.images.map(img => `${API}${img}`));
+      setImagePreviews(product.images.map(img => img.startsWith('http') ? img : `${API}${img}`));
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -215,14 +222,21 @@ export default function KidsProductsAdmin({ gender = null, filterGroup = null })
       title: '',
       description: '',
       category: '',
+      categorySlug: '',
       price: '',
+      originalPrice: '',
+      discount: 0,
       sizes: [],
       colors: [],
+      material: '',
       ageGroup: '',
       gender: activeGender,
+      stock: 0,
+      badge: '',
       featured: false,
       isActive: true,
-      order: 0
+      order: 0,
+      tags: []
     });
     setEditingId(null);
     setSelectedImages([]);
@@ -255,11 +269,10 @@ export default function KidsProductsAdmin({ gender = null, filterGroup = null })
               setFormData({ ...formData, gender: 'Girls', category: '' });
               setFilterCategory('');
             }}
-            className={`flex-1 px-6 py-3 rounded-lg font-medium transition-all ${
-              activeGender === 'Girls'
-                ? 'bg-gradient-to-r from-pink-500 to-purple-500 text-white shadow-lg'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-            }`}
+            className={`flex-1 px-6 py-3 rounded-lg font-medium transition-all ${activeGender === 'Girls'
+              ? 'bg-gradient-to-r from-pink-500 to-purple-500 text-white shadow-lg'
+              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
           >
             👧 Girls Products
           </button>
@@ -269,11 +282,10 @@ export default function KidsProductsAdmin({ gender = null, filterGroup = null })
               setFormData({ ...formData, gender: 'Boys', category: '' });
               setFilterCategory('');
             }}
-            className={`flex-1 px-6 py-3 rounded-lg font-medium transition-all ${
-              activeGender === 'Boys'
-                ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-            }`}
+            className={`flex-1 px-6 py-3 rounded-lg font-medium transition-all ${activeGender === 'Boys'
+              ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg'
+              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
           >
             👦 Boys Products
           </button>
@@ -285,7 +297,7 @@ export default function KidsProductsAdmin({ gender = null, filterGroup = null })
         <h3 className="text-xl font-bold mb-4 text-gray-800">
           {editingId ? `Edit ${activeGender} Product` : `Add New ${activeGender} Product`}
         </h3>
-        
+
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -379,17 +391,77 @@ export default function KidsProductsAdmin({ gender = null, filterGroup = null })
             )}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Pricing Section */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Price
+                Price *
               </label>
               <input
                 type="number"
                 value={formData.price}
                 onChange={(e) => setFormData({ ...formData, price: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-                placeholder="0.00"
+                placeholder="1299"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Original Price
+              </label>
+              <input
+                type="number"
+                value={formData.originalPrice}
+                onChange={(e) => setFormData({ ...formData, originalPrice: e.target.value })}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                placeholder="1799"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Discount %
+              </label>
+              <input
+                type="number"
+                value={formData.discount}
+                onChange={(e) => setFormData({ ...formData, discount: parseInt(e.target.value) || 0 })}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                placeholder="28"
+                min="0"
+                max="100"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Stock Quantity
+              </label>
+              <input
+                type="number"
+                value={formData.stock}
+                onChange={(e) => setFormData({ ...formData, stock: parseInt(e.target.value) || 0 })}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                placeholder="50"
+                min="0"
+              />
+            </div>
+          </div>
+
+          {/* Product Details */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Material
+              </label>
+              <input
+                type="text"
+                value={formData.material}
+                onChange={(e) => setFormData({ ...formData, material: e.target.value })}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                placeholder="Cotton Blend"
               />
             </div>
 
@@ -411,18 +483,51 @@ export default function KidsProductsAdmin({ gender = null, filterGroup = null })
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Gender
+                Badge
               </label>
-              <input
-                type="text"
-                value={formData.gender}
-                disabled
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-600"
-              />
+              <select
+                value={formData.badge}
+                onChange={(e) => setFormData({ ...formData, badge: e.target.value })}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+              >
+                <option value="">No Badge</option>
+                <option value="NEW">NEW</option>
+                <option value="SALE">SALE</option>
+                <option value="HOT">HOT</option>
+                <option value="TRENDING">TRENDING</option>
+              </select>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Category Slug (Auto-generated hint) */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Category Slug (auto-generated from category)
+            </label>
+            <input
+              type="text"
+              value={formData.categorySlug || formData.category.toLowerCase().replace(/\s+/g, '-').replace(/&/g, 'and')}
+              onChange={(e) => setFormData({ ...formData, categorySlug: e.target.value })}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent bg-gray-50"
+              placeholder="dresses-gowns"
+            />
+            <p className="text-xs text-gray-500 mt-1">Used in URLs. Leave empty to auto-generate.</p>
+          </div>
+
+          {/* Gender (Read-only) */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Gender
+            </label>
+            <input
+              type="text"
+              value={formData.gender}
+              disabled
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-600"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Sizes (comma separated)
@@ -432,7 +537,7 @@ export default function KidsProductsAdmin({ gender = null, filterGroup = null })
                 value={formData.sizes.join(', ')}
                 onChange={(e) => handleArrayInput('sizes', e.target.value)}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-                placeholder="S, M, L, XL"
+                placeholder="2-3Y, 3-4Y, 4-5Y"
               />
             </div>
 
@@ -446,6 +551,19 @@ export default function KidsProductsAdmin({ gender = null, filterGroup = null })
                 onChange={(e) => handleArrayInput('colors', e.target.value)}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
                 placeholder="Red, Blue, Green"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Tags (comma separated)
+              </label>
+              <input
+                type="text"
+                value={formData.tags.join(', ')}
+                onChange={(e) => handleArrayInput('tags', e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                placeholder="party wear, summer, festive"
               />
             </div>
           </div>
@@ -523,7 +641,7 @@ export default function KidsProductsAdmin({ gender = null, filterGroup = null })
             ))}
           </select>
         </div>
-        
+
         {loading ? (
           <div className="text-center py-8">Loading...</div>
         ) : products.length === 0 ? (
@@ -540,12 +658,12 @@ export default function KidsProductsAdmin({ gender = null, filterGroup = null })
               >
                 {product.images && product.images.length > 0 && (
                   <img
-                    src={`${API}${product.images[0]}`}
+                    src={product.images[0].startsWith('http') ? product.images[0] : `${API}${product.images[0]}`}
                     alt={product.title}
                     className="w-full h-48 object-cover"
                   />
                 )}
-                
+
                 <div className="p-4">
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex-1">
@@ -555,7 +673,7 @@ export default function KidsProductsAdmin({ gender = null, filterGroup = null })
                         <p className="text-lg font-bold text-[#de3cad] mt-1">₹{product.price}</p>
                       )}
                     </div>
-                    
+
                     <div className="flex flex-col gap-1">
                       {product.featured && (
                         <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">Featured</span>
@@ -571,11 +689,11 @@ export default function KidsProductsAdmin({ gender = null, filterGroup = null })
                       )}
                     </div>
                   </div>
-                  
+
                   {product.gender && (
                     <p className="text-xs text-gray-500 mb-2">Gender: {product.gender}</p>
                   )}
-                  
+
                   <div className="flex gap-2 mt-3">
                     <button
                       onClick={() => handleEdit(product)}
@@ -599,3 +717,4 @@ export default function KidsProductsAdmin({ gender = null, filterGroup = null })
     </div>
   );
 }
+

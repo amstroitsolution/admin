@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://api.yashper.com";
 const API = `${API_BASE}/api/home-services`;
 
 const AddHomeService = ({ onClose = () => {}, onAdded = () => {} }) => {
@@ -45,7 +45,7 @@ const AddHomeService = ({ onClose = () => {}, onAdded = () => {} }) => {
       Object.keys(form).forEach((k) => fd.append(k, form[k]));
       if (file) fd.append("media", file);
 
-      const res = await axios.post(`${API}/admin`, fd, {
+      const res = await axios.post(`${API}admin`, fd, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
@@ -134,3 +134,4 @@ const AddHomeService = ({ onClose = () => {}, onAdded = () => {} }) => {
 };
 
 export default AddHomeService;
+

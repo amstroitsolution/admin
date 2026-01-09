@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FiMenu, FiPlus, FiEdit2, FiTrash2, FiEye, FiEyeOff, FiSave, FiX, FiChevronDown, FiChevronRight } from 'react-icons/fi';
 import axios from 'axios';
 
-const API = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+const API = (import.meta.env.VITE_API_BASE_URL || 'https://api.yashper.com').replace(/\/$/, "");
 
 export default function NavbarAdmin() {
   const [menuItems, setMenuItems] = useState([]);
@@ -565,3 +565,4 @@ export default function NavbarAdmin() {
     </div>
   );
 }
+

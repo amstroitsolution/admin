@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import axios from 'axios';
 import { FiPlus, FiEdit2, FiTrash2, FiEye, FiEyeOff, FiX } from 'react-icons/fi';
 
-const API = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+const API = (import.meta.env.VITE_API_BASE_URL || 'https://api.yashper.com').replace(/\/$/, "");
 
 const FIELD_TYPES = [
   { value: 'text', label: 'Text' },
@@ -536,3 +536,4 @@ export default function KidsSectionsManager() {
     </div>
   );
 }
+

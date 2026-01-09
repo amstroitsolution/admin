@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
 export default function EditSareeModal({ isOpen, onClose, item, onUpdated }) {
-  const API = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+  const API = (import.meta.env.VITE_API_BASE_URL || "https://api.yashper.com").replace(/\/$/, "");
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");

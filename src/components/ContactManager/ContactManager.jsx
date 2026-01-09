@@ -30,7 +30,7 @@ const ContactManager = () => {
   const fetchContacts = async () => {
     try {
       setLoading(true);
-      const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+      const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://api.yashper.com";
       const response = await fetch(`${API_BASE}/api/contact?page=${currentPage}&limit=10`);
       const data = await response.json();
       
@@ -47,7 +47,7 @@ const ContactManager = () => {
 
   const updateContactStatus = async (contactId, newStatus) => {
     try {
-      const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+      const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://api.yashper.com";
       const response = await fetch(`${API_BASE}/api/contact/${contactId}/status`, {
         method: 'PUT',
         headers: {
@@ -75,7 +75,7 @@ const ContactManager = () => {
     }
 
     try {
-      const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+      const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://api.yashper.com";
       const response = await fetch(`${API_BASE}/api/contact/${contactId}`, {
         method: 'DELETE',
       });
@@ -143,7 +143,7 @@ const ContactManager = () => {
 
     try {
       setSendingReply(true);
-      const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+      const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://api.yashper.com";
       const response = await fetch(`${API_BASE}/api/contact/${selectedContact._id}/reply`, {
         method: 'POST',
         headers: {

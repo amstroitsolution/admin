@@ -29,7 +29,7 @@ export default function AddWatchBuy() {
     data.append("file", formData.file);
 
     try {
-      await axios.post("http://localhost:5000/api/watchbuy", data, {
+      await axios.post("https://api.yashper.com/api/watchbuy", data, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       alert("Uploaded successfully!");

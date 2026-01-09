@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FiPlus, FiEdit2, FiTrash2, FiStar, FiEye, FiEyeOff, FiSave, FiX } from 'react-icons/fi';
 import axios from 'axios';
 
-const API = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+const API = (import.meta.env.VITE_API_BASE_URL || "https://api.yashper.com").replace(/\/$/, "");
 
 export default function OurValuesAdmin() {
   const [values, setValues] = useState([]);

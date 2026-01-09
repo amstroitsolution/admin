@@ -2,7 +2,7 @@
 import React, { useRef, useState } from "react";
 
 export default function AddSaree() {
-  const API = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+  const API = (import.meta.env.VITE_API_BASE_URL || "https://api.yashper.com").replace(/\/$/, "");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [details, setDetails] = useState(""); // 🆕 new field for long details/specs

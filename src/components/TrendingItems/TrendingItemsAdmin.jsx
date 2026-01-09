@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const API = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+const API = (import.meta.env.VITE_API_BASE_URL || 'https://api.yashper.com').replace(/\/$/, "");
 
 export default function TrendingItemsAdmin() {
   const [items, setItems] = useState([]);
@@ -128,3 +128,4 @@ export default function TrendingItemsAdmin() {
     </div>
   );
 }
+
