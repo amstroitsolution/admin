@@ -19,8 +19,8 @@ export default function WomenProductsAdmin({ filterGroup = null }) {
     category: '',
     categorySlug: '',
     price: '',
-    sizes: [],
-    colors: [],
+    sizes: '',
+    colors: '',
     material: '',
     featured: false,
     isActive: true,
@@ -154,16 +154,7 @@ export default function WomenProductsAdmin({ filterGroup = null }) {
   };
 
   const fetchProducts = async () => {
-    // Don't fetch products if user is currently uploading images OR editing
-    const hasImages = sessionStorage.getItem('hasSelectedImages') === 'true';
-    const isEditing = sessionStorage.getItem('editingProductId');
-
-    if (selectedImages.length > 0 || hasImages || (isEditing && editingId)) {
-      console.log('⚠️ Skipping fetchProducts - user is editing/uploading images');
-      return;
-    }
-
-    console.log('🔄 fetchProducts called - this might be resetting state!');
+    console.log('🔄 fetchProducts called');
     try {
       setLoading(true);
       const res = await axios.get(`${API}/api/women-products`);
@@ -264,7 +255,10 @@ export default function WomenProductsAdmin({ filterGroup = null }) {
       // Append basic fields
       Object.keys(formData).forEach(key => {
         if (key === 'sizes' || key === 'colors') {
-          formDataToSend.append(key, JSON.stringify(formData[key]));
+          // Split string to array then stringify to send as JSON array (so backend receives ["S","M"])
+          const val = formData[key] ? String(formData[key]) : '';
+          const array = val.split(',').map(item => item.trim()).filter(Boolean);
+          formDataToSend.append(key, JSON.stringify(array));
         } else {
           formDataToSend.append(key, formData[key]);
         }
@@ -321,8 +315,10 @@ export default function WomenProductsAdmin({ filterGroup = null }) {
         if (filterGroup) {
           const filtered = res.data.filter(product => {
             if (!product.category) return false;
+            // Re-apply filter logic
             const categoryStr = String(product.category).toLowerCase();
             const filterStr = filterGroup.toLowerCase();
+
             if (filterStr === 'dresses') {
               return categoryStr.includes('dress') || categoryStr.includes('gown') || categoryStr.includes('jumpsuit');
             } else if (filterStr === 'sets') {
@@ -386,8 +382,8 @@ export default function WomenProductsAdmin({ filterGroup = null }) {
       category: product.category,
       categorySlug: product.categorySlug || product.category,
       price: product.price || '',
-      sizes: product.sizes || [],
-      colors: product.colors || [],
+      sizes: (product.sizes || []).join(', '),
+      colors: (product.colors || []).join(', '),
       material: product.material || '',
       featured: product.featured || false,
       isActive: product.isActive,
@@ -421,8 +417,8 @@ export default function WomenProductsAdmin({ filterGroup = null }) {
       category: '',
       categorySlug: '',
       price: '',
-      sizes: [],
-      colors: [],
+      sizes: '',
+      colors: '',
       material: '',
       featured: false,
       isActive: true,
@@ -437,10 +433,7 @@ export default function WomenProductsAdmin({ filterGroup = null }) {
     sessionStorage.removeItem('hasSelectedImages');
   };
 
-  const handleArrayInput = (field, value) => {
-    const array = value.split(',').map(item => item.trim()).filter(item => item);
-    setFormData({ ...formData, [field]: array });
-  };
+
 
   return (
     <div className="space-y-6">
@@ -490,7 +483,7 @@ export default function WomenProductsAdmin({ filterGroup = null }) {
                   setFormData({
                     ...formData,
                     categorySlug: e.target.value,
-                    category: selectedCategory ? selectedCategory.name : e.target.value
+                    category: selectedCategory ? (selectedCategory.displayName || selectedCategory.name) : e.target.value
                   });
                 }}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
@@ -633,8 +626,8 @@ export default function WomenProductsAdmin({ filterGroup = null }) {
               <label className="block text-sm font-medium text-gray-700 mb-2">Sizes (comma separated)</label>
               <input
                 type="text"
-                value={formData.sizes.join(', ')}
-                onChange={(e) => handleArrayInput('sizes', e.target.value)}
+                value={formData.sizes}
+                onChange={(e) => setFormData({ ...formData, sizes: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
                 placeholder="S, M, L, XL, XXL"
               />
@@ -644,8 +637,8 @@ export default function WomenProductsAdmin({ filterGroup = null }) {
               <label className="block text-sm font-medium text-gray-700 mb-2">Colors (comma separated)</label>
               <input
                 type="text"
-                value={formData.colors.join(', ')}
-                onChange={(e) => handleArrayInput('colors', e.target.value)}
+                value={formData.colors}
+                onChange={(e) => setFormData({ ...formData, colors: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
                 placeholder="Red, Blue, Green"
               />
